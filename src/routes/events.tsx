@@ -6,11 +6,19 @@ export const Route = createFileRoute("/events")({
   head: () => ({
     meta: [
       { title: "Training & Events | BEC Bangladesh" },
-      { name: "description", content: "Upcoming BEC workshops, summits, and networking events for professionals in Bangladesh." },
+      {
+        name: "description",
+        content:
+          "Upcoming BEC workshops, summits, and networking events for professionals in Bangladesh.",
+      },
       { property: "og:title", content: "Training & Events | BEC Bangladesh" },
-      { property: "og:description", content: "Upcoming BEC workshops, summits, and networking events for professionals in Bangladesh." },
+      {
+        property: "og:description",
+        content:
+          "Upcoming BEC workshops, summits, and networking events for professionals in Bangladesh.",
+      },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/events" }
+      { rel: "canonical", href: "https://bec.com/events" },
     ],
   }),
 });

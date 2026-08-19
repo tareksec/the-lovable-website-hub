@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 export interface StickyFeature {
   title: string;
@@ -30,9 +30,9 @@ const useScrollAnimation = () => {
       },
       {
         root: null, // observing intersections relative to the viewport
-        rootMargin: '0px',
+        rootMargin: "0px",
         threshold: 0.1, // 10% of the item must be visible to trigger the callback
-      }
+      },
     );
 
     observer.observe(element);
@@ -52,19 +52,19 @@ const AnimatedHeader = ({ title, subtitle }: { title?: string; subtitle?: string
   return (
     <div className="text-center max-w-3xl mx-auto mb-16 px-4">
       {title && (
-        <h2 
+        <h2
           ref={headerRef as React.RefObject<HTMLHeadingElement>}
-          className={`text-[28px] md:text-[40px] font-[800] text-[#14202d] leading-[1.2] transition-all duration-700 ease-out ${headerInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-          style={{ transformStyle: 'preserve-3d' }}
+          className={`text-[28px] md:text-[40px] font-[800] text-[#14202d] leading-[1.2] transition-all duration-700 ease-out ${headerInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          style={{ transformStyle: "preserve-3d" }}
         >
           {title}
         </h2>
       )}
       {subtitle && (
-        <p 
+        <p
           ref={pRef as React.RefObject<HTMLParagraphElement>}
-          className={`text-[15px] text-[#6b7280] leading-[1.75] mt-4 transition-all duration-700 ease-out delay-200 ${pInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-          style={{ transformStyle: 'preserve-3d' }}
+          className={`text-[15px] text-[#6b7280] leading-[1.75] mt-4 transition-all duration-700 ease-out delay-200 ${pInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          style={{ transformStyle: "preserve-3d" }}
         >
           {subtitle}
         </p>
@@ -81,7 +81,6 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
         <div className="max-w-7xl mx-auto">
           {/* The main section for the features */}
           <section className="flex flex-col items-center">
-            
             {(title || subtitle) && <AnimatedHeader title={title} subtitle={subtitle} />}
 
             {/* The container for the sticky cards */}
@@ -90,28 +89,34 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
                 <div
                   key={index}
                   // The sticky class makes the card stick to the top of the container on desktop.
-                  className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-12 p-8 md:p-12 rounded-[24px] mb-16 static md:sticky shadow-sm border border-gray-100`}
+                  className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 p-10 md:p-14 rounded-[32px] mb-16 static md:sticky shadow-bec-soft hover:shadow-bec-soft-hover transition-shadow border border-gray-100/60`}
                   // All cards will stick at the same position, creating the stacking effect.
-                  style={{ top: '120px' }}
+                  style={{ top: "120px" }}
                 >
                   {/* Card Content */}
                   <div className="flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d]">{feature.title}</h3>
-                    <p className={`${feature.textColor} text-[15px] leading-relaxed`}>{feature.description}</p>
+                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d]">
+                      {feature.title}
+                    </h3>
+                    <p className={`${feature.textColor} text-[15px] leading-relaxed`}>
+                      {feature.description}
+                    </p>
                   </div>
-                  
+
                   {/* Card Image */}
                   <div className="image-wrapper mt-8 md:mt-0">
-                    <img 
-                      src={feature.imageUrl} 
+                    <img
+                      src={feature.imageUrl}
                       alt={feature.title}
                       loading="lazy"
+                      decoding="async"
                       className="w-full h-[300px] md:h-[400px] rounded-xl shadow-md object-cover"
                       // Simple fallback in case an image fails to load
-                      onError={(e) => { 
+                      onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.onerror = null; 
-                        target.src = "https://placehold.co/600x400/cccccc/ffffff?text=Image+Not+Found"; 
+                        target.onerror = null;
+                        target.src =
+                          "https://placehold.co/600x400/cccccc/ffffff?text=Image+Not+Found";
                       }}
                     />
                   </div>

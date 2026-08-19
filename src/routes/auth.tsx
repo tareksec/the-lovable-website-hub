@@ -1,20 +1,23 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
-export const Route = createFileRoute('/auth')({
+export const Route = createFileRoute("/auth")({
   component: AuthPage,
   head: () => ({
     meta: [
-      { title: 'Admin Sign In | Bangladesh Executive Chamber' },
-      { name: 'description', content: 'Secure sign in for the BEC content administration panel.' },
-      { name: 'robots', content: 'noindex' },
-      { property: 'og:title', content: 'Admin Sign In | Bangladesh Executive Chamber' },
-      { property: 'og:description', content: 'Secure sign in for the BEC content administration panel.' },
-      { property: 'og:type', content: 'website' },
-      { name: 'twitter:card', content: 'summary' },
+      { title: "Admin Sign In | Bangladesh Executive Chamber" },
+      { name: "description", content: "Secure sign in for the BEC content administration panel." },
+      { name: "robots", content: "noindex" },
+      { property: "og:title", content: "Admin Sign In | Bangladesh Executive Chamber" },
+      {
+        property: "og:description",
+        content: "Secure sign in for the BEC content administration panel.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });
@@ -22,23 +25,23 @@ export const Route = createFileRoute('/auth')({
 function AuthPage() {
   const navigate = useNavigate();
   const { session } = useAuth();
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (session) navigate({ to: '/admin' });
+    if (session) navigate({ to: "/admin" });
   }, [session, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
     try {
-      if (mode === 'signin') {
+      if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast.success('Signed in');
+        toast.success("Signed in");
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -46,11 +49,11 @@ function AuthPage() {
           options: { emailRedirectTo: `${window.location.origin}/admin` },
         });
         if (error) throw error;
-        toast.success('Account created. You can sign in now.');
-        setMode('signin');
+        toast.success("Account created. You can sign in now.");
+        setMode("signin");
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Authentication failed');
+      toast.error(err instanceof Error ? err.message : "Authentication failed");
     } finally {
       setBusy(false);
     }
@@ -64,7 +67,7 @@ function AuthPage() {
             BEC
           </div>
           <h1 className="text-2xl font-extrabold text-[#14202d]">
-            {mode === 'signin' ? 'Admin Sign In' : 'Create Admin Account'}
+            {mode === "signin" ? "Admin Sign In" : "Create Admin Account"}
           </h1>
           <p className="mt-1 text-sm text-gray-500">Bangladesh Executive Chamber control panel</p>
         </div>
@@ -96,15 +99,17 @@ function AuthPage() {
             disabled={busy}
             className="w-full rounded-lg bg-[#08735d] py-2.5 font-semibold text-white transition hover:bg-[#065c4a] disabled:opacity-60"
           >
-            {busy ? 'Please wait…' : mode === 'signin' ? 'Sign In' : 'Sign Up'}
+            {busy ? "Please wait…" : mode === "signin" ? "Sign In" : "Sign Up"}
           </button>
         </form>
 
         <button
-          onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
+          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
           className="mt-5 w-full text-sm text-gray-500 hover:text-[#08735d]"
         >
-          {mode === 'signin' ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
+          {mode === "signin"
+            ? "Don't have an account? Sign up"
+            : "Already have an account? Sign in"}
         </button>
       </div>
     </div>

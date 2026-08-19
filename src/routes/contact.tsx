@@ -6,11 +6,19 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact Us | Bangladesh Executive Chamber" },
-      { name: "description", content: "Get in touch with the Bangladesh Executive Chamber team for partnerships, services, or general enquiries." },
+      {
+        name: "description",
+        content:
+          "Get in touch with the Bangladesh Executive Chamber team for partnerships, services, or general enquiries.",
+      },
       { property: "og:title", content: "Contact Us | Bangladesh Executive Chamber" },
-      { property: "og:description", content: "Get in touch with the Bangladesh Executive Chamber team for partnerships, services, or general enquiries." },
+      {
+        property: "og:description",
+        content:
+          "Get in touch with the Bangladesh Executive Chamber team for partnerships, services, or general enquiries.",
+      },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/contact" }
+      { rel: "canonical", href: "https://bec.com/contact" },
     ],
   }),
 });

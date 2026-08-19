@@ -7,6 +7,7 @@ const reviewSchema = z.object({
   company: z.string().trim().max(160).optional(),
   rating: z.number().int().min(1).max(5),
   message: z.string().trim().min(10).max(2000),
+  _honey: z.string().max(0).optional(),
 });
 
 const registrationSchema = z.object({
@@ -14,6 +15,7 @@ const registrationSchema = z.object({
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(200),
   phone: z.string().trim().max(40).optional(),
+  _honey: z.string().max(0).optional(),
 });
 
 const contactSchema = z.object({
@@ -22,6 +24,7 @@ const contactSchema = z.object({
   phone: z.string().trim().max(40).optional(),
   subject: z.string().trim().max(200).optional(),
   message: z.string().trim().min(5).max(3000),
+  _honey: z.string().max(0).optional(),
 });
 
 const memberSchema = z.object({
@@ -32,9 +35,13 @@ const memberSchema = z.object({
   designation: z.string().trim().max(160).optional(),
   tier: z.enum(["basic", "professional", "corporate"]),
   message: z.string().trim().max(2000).optional(),
+  _honey: z.string().max(0).optional(),
 });
 
-const emailSchema = z.object({ email: z.string().trim().email().max(200) });
+const emailSchema = z.object({
+  email: z.string().trim().email().max(200),
+  _honey: z.string().max(0).optional(),
+});
 
 export const submitReview = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => reviewSchema.parse(input))

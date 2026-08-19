@@ -1,95 +1,180 @@
-import { Link } from '@tanstack/react-router';
-import { Link2 as LinkedinIcon, Mail, Phone, MapPin, ArrowUpRight, Heart } from 'lucide-react';
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Link2 as LinkedinIcon, Mail, Phone, MapPin, ArrowRight, Heart } from "lucide-react";
+import { toast } from "sonner";
+import { publicApi } from "@/lib/publicApi";
+import { StaggerContainer, StaggerItem } from "./Animations";
 
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubscribing(true);
+    try {
+      await publicApi.newsletter.subscribe(email);
+      toast.success("Subscribed! (Note: Automated email sending is not enabled yet)");
+      setEmail("");
+    } catch (err) {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setSubscribing(false);
+    }
+  };
+
   return (
-    <footer className="bec-footer">
-      {/* Decorative top edge */}
-      <div className="bec-footer-glow" />
+    <footer className="relative bg-[#111a24] text-gray-300 pt-24 pb-12 overflow-hidden border-t border-white/5">
+      {/* Decorative top glowing border */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#08735d] to-transparent opacity-50" />
 
-      <div className="bec-footer-main">
-        {/* Column 1: Brand */}
-        <div className="bec-footer-brand-col">
-          <div className="bec-footer-brand">
-            <div className="bec-footer-mark">BEC</div>
-            <div>
-              <div className="bec-footer-name">BANGLADESH EXECUTIVE CHAMBER</div>
-              <div className="bec-footer-tagline">Empowering Professionals</div>
+      {/* Subtle technical grid background */}
+      <div 
+        className="absolute inset-0 opacity-[0.02] pointer-events-none" 
+        style={{ 
+          backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(to right, rgba(255,255,255,1) 1px, transparent 1px)', 
+          backgroundSize: '24px 24px' 
+        }}
+      />
+
+      {/* Ambient glow effects */}
+      <div className="absolute -top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#08735d] blur-[150px] opacity-10 pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-[#c09643] blur-[150px] opacity-[0.03] pointer-events-none rounded-full" />
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16 lg:gap-8 mb-20">
+          {/* Brand Column */}
+          <StaggerItem className="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col pr-0 lg:pr-8">
+            <Link to="/" className="flex items-center gap-4 mb-6 group">
+              <div className="w-14 h-14 bg-white/[0.03] rounded-2xl flex items-center justify-center group-hover:bg-[#08735d]/20 transition-all duration-500 border border-white/10 group-hover:border-[#08735d]/50 shadow-[0_0_20px_rgba(8,115,93,0)] group-hover:shadow-[0_0_20px_rgba(8,115,93,0.2)]">
+                <span className="text-white font-[900] text-2xl tracking-tighter">BEC</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-white font-[800] text-xl leading-none tracking-tight mb-1">
+                  Bangladesh
+                </span>
+                <span className="text-gray-400 font-[600] text-sm leading-none tracking-wide uppercase">
+                  Executive Chamber
+                </span>
+              </div>
+            </Link>
+            <p className="text-gray-400/80 text-[15px] leading-relaxed mb-8 max-w-sm">
+              A premium professional ecosystem dedicated to empowering careers and strengthening brands
+              through strategic consulting, talent solutions, and dynamic networking.
+            </p>
+            <div className="flex items-center gap-4">
+              <a
+                href="https://www.linkedin.com/company/bangladesh-executive-chamber/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:bg-[#0077B5] hover:border-[#0077B5] hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_rgba(0,119,181,0.4)]"
+              >
+                <LinkedinIcon size={16} />
+              </a>
             </div>
-          </div>
-          <p className="bec-footer-desc">
-            A professional ecosystem dedicated to empowering careers and strengthening brands through strategic consulting, talent solutions, and networking.
+          </StaggerItem>
+
+          {/* Links Column 1 */}
+          <StaggerItem className="col-span-1 lg:col-span-2 lg:ml-auto">
+            <h4 className="text-white font-[700] mb-8 tracking-[0.15em] uppercase text-[11px] opacity-80">
+              Quick Links
+            </h4>
+            <ul className="space-y-4">
+              {["Home", "About Us", "Our Services", "Community"].map((link) => (
+                <li key={link}>
+                  <Link
+                    to={link === "Home" ? "/" : `/${link.toLowerCase().replace(" ", "-")}`}
+                    className="text-gray-400/80 text-[14px] hover:text-white transition-colors flex items-center gap-2 group/link"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#08735d] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </StaggerItem>
+
+          {/* Links Column 2 */}
+          <StaggerItem className="col-span-1 lg:col-span-2 lg:ml-auto">
+            <h4 className="text-white font-[700] mb-8 tracking-[0.15em] uppercase text-[11px] opacity-80">Explore</h4>
+            <ul className="space-y-4">
+              {["Events", "Reviews", "Resources", "Join BEC"].map((link) => (
+                <li key={link}>
+                  <Link
+                    to={`/${link.toLowerCase().replace(" ", "-")}`}
+                    className="text-gray-400/80 text-[14px] hover:text-white transition-colors flex items-center gap-2 group/link"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#08735d] opacity-0 group-hover/link:opacity-100 transition-opacity" />
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </StaggerItem>
+
+          {/* Contact & Newsletter Column */}
+          <StaggerItem className="col-span-1 md:col-span-2 lg:col-span-4 lg:pl-8">
+            <h4 className="text-white font-[700] mb-6 tracking-[0.15em] uppercase text-[11px] opacity-80">
+              Stay Updated
+            </h4>
+            <p className="text-[14px] text-gray-400/80 mb-6 leading-relaxed">
+              Subscribe to our newsletter for the latest insights, exclusive events, and elite career opportunities.
+            </p>
+            <form className="relative flex items-center mb-10 group" onSubmit={handleSubscribe}>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#08735d] to-[#0a9a7c] rounded-full blur opacity-0 group-focus-within:opacity-20 transition-opacity duration-500" />
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={subscribing}
+                className="w-full relative bg-white/[0.03] border border-white/10 rounded-full py-3.5 pl-6 pr-14 text-[14px] text-white placeholder-gray-500 focus:outline-none focus:border-[#08735d]/50 focus:bg-white/[0.05] transition-all duration-300 disabled:opacity-50"
+              />
+              <button
+                type="submit"
+                disabled={subscribing}
+                className="absolute right-1.5 p-2.5 bg-[#08735d] hover:bg-[#0a9a7c] text-white rounded-full transition-colors duration-300 disabled:opacity-50 shadow-[0_0_15px_rgba(8,115,93,0.3)] hover:shadow-[0_0_20px_rgba(10,154,124,0.5)]"
+                aria-label="Subscribe"
+              >
+                <ArrowRight size={16} strokeWidth={2.5} />
+              </button>
+            </form>
+
+            <div className="space-y-4">
+              <a
+                href="mailto:info@bec.com.bd"
+                className="inline-flex items-center gap-3 text-[14px] text-gray-400/80 hover:text-white transition-colors group/contact"
+              >
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover/contact:bg-[#08735d]/20 group-hover/contact:border-[#08735d]/50 group-hover/contact:text-[#08735d] transition-all duration-300">
+                  <Mail size={14} />
+                </div>
+                info@bec.com.bd
+              </a>
+              <div className="flex items-center gap-3 text-[14px] text-gray-400/80">
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                  <MapPin size={14} />
+                </div>
+                Dhaka, Bangladesh
+              </div>
+            </div>
+          </StaggerItem>
+        </StaggerContainer>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[13px] text-gray-500">
+            &copy; {new Date().getFullYear()} Bangladesh Executive Chamber. All Rights Reserved.
           </p>
-          {/* Social */}
-          <div className="bec-footer-socials">
-            <a
-              href="https://www.linkedin.com/company/bangladesh-executive-chamber/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bec-footer-social-btn"
-              aria-label="LinkedIn"
-            >
-              <LinkedinIcon size={18} />
-            </a>
+          <div className="flex items-center gap-6 text-[13px] text-gray-500">
+            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <span className="flex items-center gap-1.5">
+              Made with <Heart size={12} className="text-red-500 fill-red-500/20" /> in BD
+            </span>
           </div>
         </div>
-
-        {/* Column 2: Quick Links */}
-        <div className="bec-footer-col">
-          <h4>Quick Links</h4>
-          <Link to="/">Home</Link>
-          <Link to="/about">About Us</Link>
-          <Link to="/services">Our Services</Link>
-          <Link to="/community">Community</Link>
-        </div>
-
-        {/* Column 3: Explore */}
-        <div className="bec-footer-col">
-          <h4>Explore</h4>
-          <Link to="/events">Events</Link>
-          <Link to="/reviews">Reviews</Link>
-          <Link to="/resources">Resources</Link>
-          <Link to="/join">Join BEC</Link>
-        </div>
-
-        {/* Column 4: Contact */}
-        <div className="bec-footer-col">
-          <h4>Get in Touch</h4>
-          <a href="mailto:info@bec.com.bd" className="bec-footer-contact-item">
-            <Mail size={14} />
-            <span>info@bec.com.bd</span>
-          </a>
-          <a href="tel:+8801700000000" className="bec-footer-contact-item">
-            <Phone size={14} />
-            <span>+880 1700-000000</span>
-          </a>
-          <div className="bec-footer-contact-item">
-            <MapPin size={14} />
-            <span>Dhaka, Bangladesh</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Newsletter CTA */}
-      <div className="bec-footer-cta">
-        <div className="bec-footer-cta-inner">
-          <div className="bec-footer-cta-text">
-            <h4>Ready to accelerate your career?</h4>
-            <p>Join thousands of professionals growing with BEC.</p>
-          </div>
-          <Link to="/join" className="bec-footer-cta-btn">
-            Become a Member
-            <ArrowUpRight size={18} />
-          </Link>
-        </div>
-      </div>
-
-      {/* Bottom bar */}
-      <div className="bec-footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Bangladesh Executive Chamber. All Rights Reserved.</p>
-        <p className="bec-footer-made-with">
-          Made with <Heart size={12} className="bec-footer-heart" /> in Bangladesh
-        </p>
       </div>
     </footer>
   );

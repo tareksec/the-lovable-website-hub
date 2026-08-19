@@ -10,14 +10,14 @@ export const Marquee = ({ className, pauseOnHover, children, ...props }: Marquee
     <div
       className={cn(
         "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
-        className
+        className,
       )}
       {...props}
     >
       <div
         className={cn(
           "flex shrink-0 justify-around [gap:var(--gap)] min-w-full animate-marquee",
-          pauseOnHover && "group-hover:[animation-play-state:paused]"
+          pauseOnHover && "group-hover:[animation-play-state:paused]",
         )}
       >
         {children}
@@ -26,7 +26,7 @@ export const Marquee = ({ className, pauseOnHover, children, ...props }: Marquee
         aria-hidden="true"
         className={cn(
           "flex shrink-0 justify-around [gap:var(--gap)] min-w-full animate-marquee",
-          pauseOnHover && "group-hover:[animation-play-state:paused]"
+          pauseOnHover && "group-hover:[animation-play-state:paused]",
         )}
       >
         {children}

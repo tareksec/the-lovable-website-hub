@@ -1,4 +1,4 @@
-import { Briefcase, BarChart, Code, Building2, Globe, Layers } from 'lucide-react';
+import { Briefcase, BarChart, Code, Building2, Globe, Layers } from "lucide-react";
 
 export const Logo01 = Building2;
 export const Logo02 = BarChart;

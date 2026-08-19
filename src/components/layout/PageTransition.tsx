@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
-import { motion, type Transition } from 'framer-motion';
+import { type ReactNode } from "react";
+import { motion, type Transition } from "framer-motion";
 
 const pageVariants = {
   initial: {
@@ -18,10 +18,16 @@ const pageVariants = {
 
 const pageTransition: Transition = {
   duration: 0.4,
-  ease: "easeOut",
+  ease: [0.22, 1, 0.36, 1],
 };
 
-export default function PageTransition({ children, className = '' }: { children: ReactNode; className?: string }) {
+export default function PageTransition({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
       initial="initial"

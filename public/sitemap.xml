@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bec.com/</loc>
+    <loc>https://bec.com.bd/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://bec.com/about</loc>
+    <loc>https://bec.com.bd/about</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bec.com/services</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bec.com/community</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bec.com/events</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bec.com/reviews</loc>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://bec.com/resources</loc>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://bec.com/join</loc>
+    <loc>https://bec.com.bd/events</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://bec.com/contact</loc>
+    <loc>https://bec.com.bd/resources</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://bec.com.bd/join</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://bec.com.bd/contact</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>

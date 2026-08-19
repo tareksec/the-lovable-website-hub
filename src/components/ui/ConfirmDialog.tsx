@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { AlertTriangle } from 'lucide-react';
+import { useCallback, useState } from "react";
+import { AlertTriangle } from "lucide-react";
 
 interface ConfirmState {
   title: string;
@@ -12,11 +12,16 @@ export function useConfirm() {
   const [state, setState] = useState<ConfirmState | null>(null);
 
   const confirm = useCallback(
-    (options: { title?: string; message?: string; confirmLabel?: string; onConfirm: () => void }) => {
+    (options: {
+      title?: string;
+      message?: string;
+      confirmLabel?: string;
+      onConfirm: () => void;
+    }) => {
       setState({
-        title: options.title ?? 'Delete this item?',
-        message: options.message ?? 'This action cannot be undone.',
-        confirmLabel: options.confirmLabel ?? 'Delete',
+        title: options.title ?? "Delete this item?",
+        message: options.message ?? "This action cannot be undone.",
+        confirmLabel: options.confirmLabel ?? "Delete",
         onConfirm: options.onConfirm,
       });
     },
@@ -30,7 +35,10 @@ export function useConfirm() {
       className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
       onClick={() => setState(null)}
     >
-      <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="mb-4 flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-500">
             <AlertTriangle size={20} />

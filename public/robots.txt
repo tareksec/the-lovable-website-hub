@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://bec.com/sitemap.xml
+
+Sitemap: https://bec.com.bd/sitemap.xml

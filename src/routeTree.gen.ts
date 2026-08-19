@@ -17,9 +17,11 @@ import { Route as CommunityRouteImport } from './routes/community'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as JoinRouteImport } from './routes/join'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ResourcesIndexRouteImport } from './routes/resources.index'
 import { Route as ResourcesSlugRouteImport } from './routes/resources.$slug'
 import { Route as ApiAdminUploadRouteImport } from './routes/api/admin/upload'
@@ -64,6 +66,11 @@ const JoinRoute = JoinRouteImport.update({
   path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -77,6 +84,11 @@ const ReviewsRoute = ReviewsRouteImport.update({
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesIndexRoute = ResourcesIndexRouteImport.update({
@@ -104,9 +116,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/join': typeof JoinRoute
+  '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/resources/': typeof ResourcesIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
@@ -120,8 +134,10 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/join': typeof JoinRoute
+  '/privacy': typeof PrivacyRoute
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/resources': typeof ResourcesIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
@@ -136,9 +152,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/events': typeof EventsRoute
   '/join': typeof JoinRoute
+  '/privacy': typeof PrivacyRoute
   '/resources': typeof ResourcesRouteWithChildren
   '/reviews': typeof ReviewsRoute
   '/services': typeof ServicesRoute
+  '/terms': typeof TermsRoute
   '/resources/$slug': typeof ResourcesSlugRoute
   '/resources/': typeof ResourcesIndexRoute
   '/api/admin/upload': typeof ApiAdminUploadRoute
@@ -154,9 +172,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/join'
+    | '/privacy'
     | '/resources'
     | '/reviews'
     | '/services'
+    | '/terms'
     | '/resources/$slug'
     | '/resources/'
     | '/api/admin/upload'
@@ -170,8 +190,10 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/join'
+    | '/privacy'
     | '/reviews'
     | '/services'
+    | '/terms'
     | '/resources/$slug'
     | '/resources'
     | '/api/admin/upload'
@@ -185,9 +207,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/events'
     | '/join'
+    | '/privacy'
     | '/resources'
     | '/reviews'
     | '/services'
+    | '/terms'
     | '/resources/$slug'
     | '/resources/'
     | '/api/admin/upload'
@@ -202,9 +226,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   EventsRoute: typeof EventsRoute
   JoinRoute: typeof JoinRoute
+  PrivacyRoute: typeof PrivacyRoute
   ResourcesRoute: typeof ResourcesRouteWithChildren
   ReviewsRoute: typeof ReviewsRoute
   ServicesRoute: typeof ServicesRoute
+  TermsRoute: typeof TermsRoute
   ApiAdminUploadRoute: typeof ApiAdminUploadRoute
 }
 
@@ -266,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
@@ -285,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources/': {
@@ -334,9 +374,11 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   EventsRoute: EventsRoute,
   JoinRoute: JoinRoute,
+  PrivacyRoute: PrivacyRoute,
   ResourcesRoute: ResourcesRouteWithChildren,
   ReviewsRoute: ReviewsRoute,
   ServicesRoute: ServicesRoute,
+  TermsRoute: TermsRoute,
   ApiAdminUploadRoute: ApiAdminUploadRoute,
 }
 export const routeTree = rootRouteImport

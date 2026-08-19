@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from "react";
+import type { Session, User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
@@ -8,8 +8,13 @@ export function useAuth() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
-      setSession(next);
+    const { data: sub } = supabase.auth.onAuthStateChange((event, next) => {
+      if (event === "SIGNED_OUT") {
+        setSession(null);
+        setIsAdmin(false);
+      } else {
+        setSession(next);
+      }
     });
 
     supabase.auth.getSession().then(({ data }) => {
@@ -28,10 +33,10 @@ export function useAuth() {
       return;
     }
     supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId)
-      .eq('role', 'admin')
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
       .maybeSingle()
       .then(({ data }) => {
         if (active) setIsAdmin(Boolean(data));

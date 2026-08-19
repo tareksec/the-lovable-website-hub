@@ -6,11 +6,19 @@ export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
       { title: "Our Services | BEC Bangladesh" },
-      { name: "description", content: "Talent Acquisition, Business Consulting, Training & Workshops, and Networking — BEC offers complete professional growth solutions." },
+      {
+        name: "description",
+        content:
+          "Talent Acquisition, Business Consulting, Training & Workshops, and Networking — BEC offers complete professional growth solutions.",
+      },
       { property: "og:title", content: "Our Services | BEC Bangladesh" },
-      { property: "og:description", content: "Talent Acquisition, Business Consulting, Training & Workshops, and Networking — BEC offers complete professional growth solutions." },
+      {
+        property: "og:description",
+        content:
+          "Talent Acquisition, Business Consulting, Training & Workshops, and Networking — BEC offers complete professional growth solutions.",
+      },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/services" }
+      { rel: "canonical", href: "https://bec.com/services" },
     ],
   }),
 });

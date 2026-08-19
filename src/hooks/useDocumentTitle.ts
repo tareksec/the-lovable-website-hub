@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 export function useDocumentTitle(title: string) {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = `${title} | Bangladesh Executive Chamber`;
-    
+
     return () => {
       document.title = prevTitle;
     };

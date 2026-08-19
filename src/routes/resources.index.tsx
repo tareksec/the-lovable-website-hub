@@ -6,11 +6,19 @@ export const Route = createFileRoute("/resources/")({
   head: () => ({
     meta: [
       { title: "Resources & Blog | BEC Bangladesh" },
-      { name: "description", content: "Articles, guides, and insights on careers, branding, and business growth from BEC." },
+      {
+        name: "description",
+        content:
+          "Articles, guides, and insights on careers, branding, and business growth from BEC.",
+      },
       { property: "og:title", content: "Resources & Blog | BEC Bangladesh" },
-      { property: "og:description", content: "Articles, guides, and insights on careers, branding, and business growth from BEC." },
+      {
+        property: "og:description",
+        content:
+          "Articles, guides, and insights on careers, branding, and business growth from BEC.",
+      },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/resources" }
+      { rel: "canonical", href: "https://bec.com/resources" },
     ],
   }),
 });

@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from "@/integrations/supabase/client";
 import {
   joinMember,
   listFeaturedMembers,
@@ -6,7 +6,28 @@ import {
   submitContact,
   submitReview,
   subscribeNewsletter,
-} from '@/lib/bec.functions';
+} from "@/lib/bec.functions";
+
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public details?: unknown,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
+const handleSupabaseError = (error: unknown, context: string) => {
+  if (error) {
+    console.error(`[API Error - ${context}]:`, error);
+    const msg =
+      error instanceof Error
+        ? error.message
+        : (error as { message?: string })?.message || "An unexpected error occurred";
+    throw new ApiError(msg, error);
+  }
+};
 
 export interface CommunityStats {
   id: number;
@@ -22,7 +43,7 @@ export interface Member {
   fullName: string;
   designation: string | null;
   company: string | null;
-  tier: 'basic' | 'professional' | 'corporate';
+  tier: "basic" | "professional" | "corporate";
 }
 
 export interface TeamMember {
@@ -59,7 +80,6 @@ export interface Post {
   readTime: string;
 }
 
-
 export interface Event {
   id: number;
   title: string;
@@ -75,10 +95,10 @@ export const publicApi = {
   community: {
     getStats: async (): Promise<{ stats: CommunityStats[] }> => {
       const { data, error } = await supabase
-        .from('site_stats')
-        .select('*')
-        .order('display_order', { ascending: true });
-      if (error) throw error;
+        .from("site_stats")
+        .select("*")
+        .order("display_order", { ascending: true });
+      handleSupabaseError(error, "getStats");
       return {
         stats: (data ?? []).map((s) => ({
           id: s.id,
@@ -97,11 +117,11 @@ export const publicApi = {
   reviews: {
     getApproved: async (): Promise<{ reviews: Review[] }> => {
       const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .eq('approved', true)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
+        .from("reviews")
+        .select("*")
+        .eq("approved", true)
+        .order("created_at", { ascending: false });
+      handleSupabaseError(error, "getApprovedReviews");
       return {
         reviews: (data ?? []).map((r) => ({
           id: r.id,
@@ -114,24 +134,30 @@ export const publicApi = {
         })),
       };
     },
-    submit: (review: { name: string; designation?: string; company?: string; rating: number; message: string }) =>
-      submitReview({ data: review }),
+    submit: (review: {
+      name: string;
+      designation?: string;
+      company?: string;
+      rating: number;
+      message: string;
+      _honey?: string;
+    }) => submitReview({ data: review }),
   },
   events: {
     getAll: async (): Promise<{ events: Event[] }> => {
       const { data, error } = await supabase
-        .from('events')
-        .select('*')
-        .order('event_date', { ascending: true });
-      if (error) throw error;
+        .from("events")
+        .select("*")
+        .order("event_date", { ascending: true });
+      handleSupabaseError(error, "getEvents");
       return {
         events: (data ?? []).map((e) => ({
           id: e.id,
           title: e.title,
-          date: new Date(e.event_date).toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
+          date: new Date(e.event_date).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
           }),
           time: e.event_time,
           venue: e.venue,
@@ -141,36 +167,44 @@ export const publicApi = {
         })),
       };
     },
-    register: (eventId: number, registration: { name: string; email: string; phone?: string }) =>
-      registerForEvent({ data: { eventId, ...registration } }),
+    register: (
+      eventId: number,
+      registration: { name: string; email: string; phone?: string; _honey?: string },
+    ) => registerForEvent({ data: { eventId, ...registration } }),
   },
   posts: {
     getAll: async (): Promise<{ posts: Post[] }> => {
       const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
+        .from("posts")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
+      handleSupabaseError(error, "getPosts");
       return { posts: (data ?? []).map(mapPost) };
     },
     getBySlug: async (slug: string): Promise<Post | null> => {
       const { data, error } = await supabase
-        .from('posts')
-        .select('*')
-        .eq('slug', slug)
-        .eq('published', true)
+        .from("posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
         .maybeSingle();
-      if (error) throw error;
+      handleSupabaseError(error, "getPostBySlug");
       return data ? mapPost(data) : null;
     },
   },
   newsletter: {
-    subscribe: (email: string) => subscribeNewsletter({ data: { email } }),
+    subscribe: (email: string, _honey?: string) => subscribeNewsletter({ data: { email, _honey } }),
   },
   contact: {
-    submit: (message: { name: string; email: string; phone?: string; subject: string; message: string }) =>
-      submitContact({ data: message }),
+    submit: (message: {
+      name: string;
+      email: string;
+      phone?: string;
+      subject: string;
+      message: string;
+      _honey?: string;
+    }) => submitContact({ data: message }),
   },
   members: {
     join: (member: {
@@ -179,17 +213,18 @@ export const publicApi = {
       phone?: string;
       company?: string;
       designation?: string;
-      tier: 'basic' | 'professional' | 'corporate';
+      tier: "basic" | "professional" | "corporate";
       message?: string;
+      _honey?: string;
     }) => joinMember({ data: member }),
   },
   team: {
     getAll: async (): Promise<{ team: TeamMember[] }> => {
       const { data, error } = await supabase
-        .from('team_members')
-        .select('*')
-        .order('display_order', { ascending: true });
-      if (error) throw error;
+        .from("team_members")
+        .select("*")
+        .order("display_order", { ascending: true });
+      handleSupabaseError(error, "getTeam");
       return {
         team: (data ?? []).map((t) => ({
           id: t.id,
@@ -217,9 +252,7 @@ function mapPost(p: {
   author_name: string | null;
   author_title: string | null;
   read_time: string | null;
-
 }): Post {
-
   return {
     id: p.id,
     title: p.title,
@@ -228,12 +261,10 @@ function mapPost(p: {
     content: p.content,
     excerpt: p.excerpt,
     coverImageUrl: p.cover_image_url,
-    tags: p.tags || '',
+    tags: p.tags || "",
     createdAt: p.created_at,
-    authorName: p.author_name || 'BEC Team',
-    authorTitle: p.author_title || 'Editorial Team',
-    readTime: p.read_time || '5 min',
+    authorName: p.author_name || "BEC Team",
+    authorTitle: p.author_title || "Editorial Team",
+    readTime: p.read_time || "5 min",
   };
 }
-
-

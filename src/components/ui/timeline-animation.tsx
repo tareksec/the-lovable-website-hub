@@ -1,11 +1,11 @@
-import React from 'react';
-import { motion, Variants } from 'framer-motion';
+import React from "react";
+import { motion, Variants } from "framer-motion";
 
 interface TimelineContentProps {
   children: React.ReactNode;
   animationNum: number;
   timelineRef?: React.RefObject<HTMLDivElement | null>;
-  customVariants?: any;
+  customVariants?: Variants;
   className?: string;
   as?: React.ElementType;
 }
@@ -15,7 +15,7 @@ export const TimelineContent: React.FC<TimelineContentProps> = ({
   animationNum,
   customVariants,
   className,
-  as: Component = 'div',
+  as: Component = "div",
 }) => {
   const defaultVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -30,11 +30,7 @@ export const TimelineContent: React.FC<TimelineContentProps> = ({
   };
 
   const variants = customVariants || defaultVariants;
-  const MotionComponent = (typeof Component === 'string'
-    ? (motion as any)[Component]
-    : (motion as any).create
-      ? (motion as any).create(Component)
-      : motion(Component as any)) as any;
+  const MotionComponent = motion(Component as React.ElementType) as React.ElementType;
 
   return (
     <MotionComponent
