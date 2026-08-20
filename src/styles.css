@@ -151,6 +151,81 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-bec-soft-hover);
   }
+
+  .bec-cursor {
+    display: none;
+  }
+
+  .bec-tilt-surface,
+  [data-tilt],
+  .bec-team-card,
+  .bec-event-card,
+  .bec-blog-card {
+    --bec-tilt-x: 0deg;
+    --bec-tilt-y: 0deg;
+    --bec-shadow-x: 0px;
+    --bec-shadow-y: 12px;
+    transform: translate3d(0, 0, 0) perspective(900px) rotateX(var(--bec-tilt-x)) rotateY(var(--bec-tilt-y));
+    box-shadow: var(--bec-shadow-x) var(--bec-shadow-y) 30px rgba(20, 32, 45, 0.1);
+    transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+    will-change: transform, box-shadow;
+  }
+
+  [data-magnetic] {
+    --bec-magnetic-x: 0px;
+    --bec-magnetic-y: 0px;
+    transform: translate3d(var(--bec-magnetic-x), var(--bec-magnetic-y), 0);
+    transition: transform 180ms ease-out;
+    will-change: transform;
+  }
+
+  [data-hero-parallax] {
+    --bec-parallax-x: 0px;
+    --bec-parallax-y: 0px;
+    transform: translate3d(var(--bec-parallax-x), var(--bec-parallax-y), 0);
+    transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    body:has(.bec-cursor) { cursor: none; }
+    a, button, [role="button"] { cursor: none; }
+    .bec-cursor {
+      display: flex;
+      position: fixed;
+      top: -14px;
+      left: -14px;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(8, 115, 93, 0.7);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #08735d;
+      font-size: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: width 180ms ease, height 180ms ease, top 180ms ease, left 180ms ease,
+        background-color 180ms ease, color 180ms ease;
+      will-change: transform;
+    }
+    .bec-cursor.is-active {
+      top: -22px;
+      left: -22px;
+      width: 44px;
+      height: 44px;
+      background: #08735d;
+      border-color: #08735d;
+      color: white;
+    }
+    .bec-cursor.is-view span {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+  }
 }
 
 @keyframes shimmer {
@@ -700,6 +775,18 @@
   will-change: transform;
 }
 
+.bec-reference-hero-parallax {
+  width: 100%;
+  pointer-events: none;
+}
+
+.bec-reference-hero-parallax > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
 .bec-reference-nav-overlay,
 .bec-reference-cta-overlay,
 .bec-reference-service-overlay,
@@ -775,6 +862,12 @@
 .bec-page:has(.bec-reference-hero) .legacy-home-marquee,
 .bec-page:has(.bec-reference-hero) .legacy-home-stats {
   display: none;
+}
+
+/* The reference hero owns the first viewport navigation; keep the real navbar
+   available as soon as the user scrolls beyond it. */
+.bec-page:has(.bec-reference-hero) .bec-header-container.is-scrolled {
+  display: block;
 }
 
 @media (max-width: 768px) {
@@ -4387,4 +4480,132 @@ a.bec-footer-contact-item:hover {
 
 .animate-marquee {
   animation: marquee var(--duration, 40s) linear infinite;
+}
+
+/* Phase 4 micro-interactions */
+.bec-nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 999px;
+  background: #08735d;
+  pointer-events: none;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1), width 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bec-marquee-strip:hover .bec-marquee-content,
+.bec-marquee-strip:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+.bec-button,
+.bec-join,
+.bec-primary,
+button[type="submit"] {
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 240ms ease,
+    background-color 240ms ease, border-color 240ms ease, color 240ms ease;
+}
+
+.bec-button:hover,
+.bec-join:hover,
+.bec-primary:hover,
+button[type="submit"]:not(:disabled):hover {
+  box-shadow: 0 12px 26px rgba(8, 115, 93, 0.22);
+}
+
+.bec-faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 240ms ease;
+}
+
+.bec-faq-answer.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.bec-faq-answer-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.bec-faq-icon {
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+button[aria-expanded="true"] .bec-faq-icon { transform: rotate(45deg); }
+
+.bec-editorial-image,
+.bec-blog-card img,
+.bec-team-photo img,
+.image-wrapper img {
+  clip-path: inset(0 100% 0 0);
+  animation: bec-image-wipe 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes bec-image-wipe {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.bec-membership-card {
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 360ms ease;
+}
+
+.bec-membership-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 20px 44px rgba(8, 115, 93, 0.16);
+}
+
+.bec-membership-card.is-popular {
+  animation: bec-popular-pulse 4s ease-in-out infinite;
+}
+
+@keyframes bec-popular-pulse {
+  0%, 100% { box-shadow: 0 18px 38px rgba(8, 115, 93, 0.2); }
+  50% { box-shadow: 0 20px 46px rgba(8, 115, 93, 0.32); }
+}
+
+.bec-input,
+.bec-floating-input {
+  transition: border-color 240ms ease, box-shadow 240ms ease, background-color 240ms ease,
+    transform 240ms ease;
+}
+
+.bec-floating-label-group:focus-within .bec-floating-input { transform: translateY(-1px); }
+
+/* Keep legacy hover rules from replacing interaction-layer transforms. */
+[data-magnetic]:hover {
+  transform: translate3d(var(--bec-magnetic-x), var(--bec-magnetic-y), 0) scale(1.01);
+}
+
+[data-tilt]:hover,
+.bec-team-card:hover,
+.bec-event-card:hover,
+.bec-blog-card:hover {
+  transform: translate3d(0, -4px, 0) perspective(900px)
+    rotateX(var(--bec-tilt-x)) rotateY(var(--bec-tilt-y));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bec-nav-indicator,
+  .bec-faq-answer,
+  .bec-faq-icon,
+  .bec-editorial-image,
+  .bec-blog-card img,
+  .bec-team-photo img,
+  .image-wrapper img,
+  .bec-membership-card,
+  .bec-input,
+  .bec-floating-input {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+  .bec-editorial-image,
+  .bec-blog-card img,
+  .bec-team-photo img,
+  .image-wrapper img {
+    clip-path: inset(0 0 0 0);
+  }
 }

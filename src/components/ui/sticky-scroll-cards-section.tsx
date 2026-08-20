@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Reveal } from "@/components/layout/Animations";
+import { Plus } from "lucide-react";
+import { motion } from "framer-motion";
 
 export interface StickyFeature {
   title: string;
@@ -26,8 +28,10 @@ const useScrollAnimation = () => {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Update state when the element's intersection status changes.
-        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.unobserve(element);
+        }
       },
       {
         root: null, // observing intersections relative to the viewport
@@ -95,36 +99,47 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
           <section className="flex flex-col items-center">
             {(title || subtitle) && <AnimatedHeader title={title} subtitle={subtitle} />}
 
-            {/* The container for the sticky cards */}
-            <div className="w-full">
+            <div className="w-full relative">
               {features.map((feature, index) => (
-                <Reveal key={index} y={28} delay={index * 0.06}>
-                  <div
-                    // The sticky class makes the card stick to the top of the container on desktop.
-                    className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 p-10 md:p-14 rounded-[32px] mb-16 static md:sticky shadow-bec-soft hover:shadow-bec-soft-hover transition-shadow border border-gray-100/60`}
-                    // All cards will stick at the same position, creating the stacking effect.
-                    style={{ top: "120px" }}
-                  >
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10%" }}
+                  transition={{ delay: index * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  // The sticky class makes the card stick to the top of the container on desktop.
+                  className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 p-10 md:p-14 rounded-[32px] mb-16 static md:sticky shadow-bec-soft hover:shadow-bec-soft-hover transition-shadow border border-gray-100/60`}
+                  // All cards will stick at the same position, creating the stacking effect.
+                  style={{ top: "120px" }}
+                >
                   {/* Card Content */}
                   <div className="flex flex-col justify-center">
                     <button
                       type="button"
-                      className="text-left"
+                      className="text-left w-full group focus:outline-none"
                       aria-expanded={openFeatures.has(index)}
                       aria-controls={`faq-answer-${index}`}
                       onClick={() => toggleFeature(index)}
                     >
-                      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d]">
-                        {feature.title}
-                      </h3>
+                      <span className="flex items-center justify-between gap-6">
+                        <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d] transition-colors group-hover:text-[#08735d]">
+                          {feature.title}
+                        </h3>
+                        <Plus
+                          aria-hidden="true"
+                          className={`h-6 w-6 shrink-0 text-[#08735d] transition-transform duration-300 ease-in-out ${openFeatures.has(index) ? "rotate-45" : ""}`}
+                        />
+                      </span>
                     </button>
                     <div
                       id={`faq-answer-${index}`}
-                      hidden={!openFeatures.has(index)}
+                      className={`grid transition-all duration-300 ease-in-out overflow-hidden ${openFeatures.has(index) ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
                     >
-                      <p className={`${feature.textColor} text-[15px] leading-relaxed`}>
-                        {feature.description}
-                      </p>
+                      <div className="min-h-0">
+                        <p className={`${feature.textColor} text-[15px] leading-relaxed pt-1 pb-4`}>
+                          {feature.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
@@ -136,6 +151,7 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
                       loading="lazy"
                       decoding="async"
                       className="w-full h-[300px] md:h-[400px] rounded-xl shadow-md object-cover"
+                      data-editorial-image
                       // Simple fallback in case an image fails to load
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
@@ -145,8 +161,7 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
                       }}
                     />
                   </div>
-                  </div>
-                </Reveal>
+                </motion.div>
               ))}
             </div>
           </section>

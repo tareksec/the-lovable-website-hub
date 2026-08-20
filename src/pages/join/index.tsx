@@ -54,7 +54,10 @@ export default function Join() {
         _honey,
       });
       setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      });
     } catch (err) {
       toast.error("Failed to submit application. Please check your connection.");
     } finally {
@@ -258,7 +261,9 @@ export default function Join() {
                     onClick={() => {
                       setSelectedTier(tier.id);
                       setTimeout(() => {
-                        document.getElementById("join-form")?.scrollIntoView({ behavior: "smooth" });
+                        document.getElementById("join-form")?.scrollIntoView({
+                          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+                        });
                         document.getElementById("name-input")?.focus();
                       }, 100);
                     }}
@@ -269,7 +274,9 @@ export default function Join() {
                         e.preventDefault();
                         setSelectedTier(tier.id);
                         setTimeout(() => {
-                          document.getElementById("join-form")?.scrollIntoView({ behavior: "smooth" });
+                          document.getElementById("join-form")?.scrollIntoView({
+                            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+                          });
                           document.getElementById("name-input")?.focus();
                         }, 100);
                       }

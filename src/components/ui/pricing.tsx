@@ -122,7 +122,7 @@ export default function PricingSection5() {
             className="flex"
           >
             <Card
-              className={`relative w-full flex flex-col transition-all duration-500 overflow-hidden ${
+              className={`bec-membership-card ${plan.popular ? "is-popular" : ""} relative w-full flex flex-col transition-all duration-500 overflow-hidden ${
                 plan.popular
                   ? "border-0 shadow-2xl shadow-[#08735d]/20 lg:-translate-y-6 bg-gradient-to-br from-[#08735d] to-[#05493b] text-white ring-1 ring-[#08735d]/50"
                   : "bg-white/80 backdrop-blur-xl border-gray-100/50 shadow-xl hover:shadow-2xl hover:-translate-y-2 text-[#14202d]"

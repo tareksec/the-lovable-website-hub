@@ -8,8 +8,10 @@ const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
       ref={ref}
       className={cn(
         "rounded-xl border bg-card text-card-foreground shadow bec-card-hover",
+        "bec-tilt-surface",
         className,
       )}
+      data-tilt
       {...props}
     />
   ),

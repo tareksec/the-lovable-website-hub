@@ -72,7 +72,11 @@ export default function Services() {
   useEffect(() => {
     if (!window.location.hash) return;
     const targetId = window.location.hash.slice(1);
-    requestAnimationFrame(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" }));
+    requestAnimationFrame(() =>
+      document.getElementById(targetId)?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      }),
+    );
   }, []);
 
   return (

@@ -70,6 +70,8 @@ const TestimonialList = ({ reviews, className, ...props }: TestimonialListProps)
           "rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-bec-soft transition-all duration-300 hover:-translate-y-1",
           className,
         )}
+        data-tilt
+        data-cursor="view"
         {...props}
       >
         <div className="p-6">

@@ -18,6 +18,7 @@ export default function Contact() {
   const [message, setMessage] = useState("");
   const [_honey, setHoney] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ export default function Contact() {
     try {
       await publicApi.contact.submit({ name, email, phone, subject, message, _honey });
       toast.success("Your message has been sent successfully!");
+      setSubmitted(true);
       setName("");
       setEmail("");
       setPhone("");
@@ -251,7 +253,7 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || submitted}
                     className="bec-button bec-primary w-full justify-center mt-4 h-12 relative overflow-hidden"
                   >
                     <AnimatePresence mode="wait">
@@ -269,6 +271,15 @@ export default function Contact() {
                             className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
                           />
                           Sending...
+                        </motion.span>
+                      ) : submitted ? (
+                        <motion.span
+                          key="success"
+                          initial={{ scale: 0.7, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          className="flex items-center justify-center gap-2"
+                        >
+                          Message Sent <CheckCircle size={18} />
                         </motion.span>
                       ) : (
                         <motion.span

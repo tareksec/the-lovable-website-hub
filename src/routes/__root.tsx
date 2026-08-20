@@ -7,10 +7,12 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { MotionConfig } from "framer-motion";
 
 import { Toaster } from "sonner";
 
 import Layout from "@/components/layout/Layout";
+import CursorInteractions from "@/components/layout/CursorInteractions";
 import BecNotFound from "@/pages/not-found";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -85,7 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/images/bec-reference.png", type: "image/png" },
+      { rel: "icon", href: "/logo.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -113,10 +115,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </Layout>
+      <MotionConfig reducedMotion="user">
+        <Layout>
+          <CursorInteractions>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </CursorInteractions>
+        </Layout>
+      </MotionConfig>
       <Toaster position="top-right" />
     </QueryClientProvider>
   );

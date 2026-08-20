@@ -47,17 +47,7 @@ export default function Footer() {
           {/* Brand Column */}
           <StaggerItem className="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col pr-0 lg:pr-8">
             <Link to="/" className="flex items-center gap-4 mb-6 group">
-              <div className="w-14 h-14 bg-white/[0.03] rounded-2xl flex items-center justify-center group-hover:bg-[#08735d]/20 transition-all duration-500 border border-white/10 group-hover:border-[#08735d]/50 shadow-[0_0_20px_rgba(8,115,93,0)] group-hover:shadow-[0_0_20px_rgba(8,115,93,0.2)]">
-                <span className="text-white font-[900] text-2xl tracking-tighter">BEC</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-white font-[800] text-xl leading-none tracking-tight mb-1">
-                  Bangladesh
-                </span>
-                <span className="text-gray-400 font-[600] text-sm leading-none tracking-wide uppercase">
-                  Executive Chamber
-                </span>
-              </div>
+              <img src="/logo.png" alt="Bangladesh Executive Chamber Logo" className="h-14 w-auto object-contain" />
             </Link>
             <p className="text-gray-400/80 text-[15px] leading-relaxed mb-8 max-w-sm">
               A premium professional ecosystem dedicated to empowering careers and strengthening brands

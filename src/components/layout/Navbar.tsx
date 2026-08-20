@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 
@@ -25,9 +25,48 @@ export default function Navbar() {
   }, [pathname, closeMenu]);
 
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const isHomePage = pathname === "/";
+  const linksRef = useRef<HTMLDivElement>(null);
+  const contourRef = useRef<SVGSVGElement>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+  const [contourPath, setContourPath] = useState("M0 1H250C278 1 298 17 318 42C331 57 340 66 366 66");
+
+  const moveIndicator = (element: HTMLElement) => {
+    const links = linksRef.current;
+    if (!links) return;
+    const linksRect = links.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    setIndicator({ left: elementRect.left - linksRect.left, width: elementRect.width });
+  };
+
+  const restoreActiveIndicator = () => {
+    const activeLink = linksRef.current?.querySelector<HTMLElement>(".bec-nav-link.active");
+    if (activeLink) moveIndicator(activeLink);
+  };
+
+  useLayoutEffect(() => {
+    const links = linksRef.current;
+    const activeLink = links?.querySelector<HTMLElement>(".bec-nav-link.active");
+    const contour = contourRef.current;
+    const join = document.querySelector<HTMLElement>(".bec-join");
+    if (!links || !activeLink || !contour || !join) return;
+
+    const updateIndicator = () => {
+      const linksRect = links.getBoundingClientRect();
+      const activeRect = activeLink.getBoundingClientRect();
+      setIndicator({ left: activeRect.left - linksRect.left, width: activeRect.width });
+
+      const contourRect = contour.getBoundingClientRect();
+      const joinRect = join.getBoundingClientRect();
+      const trackEnd = joinRect.left - 12;
+      const endX = Math.max(366, ((trackEnd - contourRect.left) / contourRect.width) * 1220);
+      setContourPath(`M0 1H250C278 1 298 17 318 42C331 57 340 66 366 66H${endX.toFixed(2)}`);
+    };
+
+    updateIndicator();
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
+  }, [pathname]);
 
   // Body scroll lock for mobile menu
   useEffect(() => {
@@ -47,21 +86,11 @@ export default function Navbar() {
       // Background state
       setScrolled(currentScrollY > 60);
 
-      // Hide/Show logic
-      if (currentScrollY < 100) {
-        setHidden(false);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 200) {
-        setHidden(true); // scrolling down
-      } else if (currentScrollY < lastScrollY) {
-        setHidden(false); // scrolling up
-      }
-
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   // Adjust body padding so content doesn't hide behind fixed navbar
   useEffect(() => {
@@ -88,17 +117,18 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`bec-header-container ${hidden ? "is-hidden" : ""} ${scrolled || !isHomePage ? "is-scrolled" : ""}`}
+        className={`bec-header-container ${scrolled || !isHomePage ? "is-scrolled" : ""}`}
       >
         <nav className="bec-nav" aria-label="Primary navigation">
           <svg
+            ref={contourRef}
             className="bec-nav-contour"
             viewBox="0 0 1220 67"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
             <path
-              d="M0 1H388C419 1 441 17 462 42C475 57 484 66 506 66H1220"
+              d={contourPath}
               fill="none"
               stroke="#427263"
               strokeWidth="1"
@@ -110,29 +140,32 @@ export default function Navbar() {
             aria-label="Bangladesh Executive Chamber home"
             data-testid="link-brand-home"
           >
-            <div className="bec-mark" aria-hidden="true">
-              BEC
-            </div>
-            <div className="bec-brand-rule" aria-hidden="true" />
-            <div className="bec-brand-name">
-              BANGLADESH
-              <br />
-              EXECUTIVE CHAMBER <span>/ BEC</span>
-            </div>
+            <img src="/logo.png" alt="Bangladesh Executive Chamber Logo" className="h-20 w-auto object-contain" />
           </Link>
-          <div className="bec-links">
+          <div ref={linksRef} className="bec-links" onMouseLeave={restoreActiveIndicator}>
+            <span
+              className="bec-nav-indicator"
+              aria-hidden="true"
+              style={{ transform: `translateX(${indicator.left}px)`, width: indicator.width }}
+            />
             {navLinks.map((link) => (
               <Link
                 key={link.to}
                 to={link.to}
                 className={`bec-nav-link ${pathname === link.to ? "active" : ""}`}
                 data-testid={`link-${link.label.toLowerCase().replaceAll(" ", "-")}`}
+                onMouseEnter={(event) => moveIndicator(event.currentTarget)}
               >
                 {link.label}
               </Link>
             ))}
           </div>
-          <Link to="/join" className="bec-join" data-testid="link-join-bec">
+          <Link
+            to="/join"
+            className="bec-join"
+            data-magnetic
+            data-testid="link-join-bec"
+          >
             Join BEC <ArrowRight aria-hidden="true" />
           </Link>
 

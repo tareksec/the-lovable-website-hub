@@ -5,6 +5,7 @@ import { Reveal } from "@/components/layout/Animations";
 import XScroll from "@/components/ui/x-scroll";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -71,6 +72,8 @@ const ServiceCard = ({ service }: { service: typeof SERVICES_DATA[0] }) => {
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="group bg-white rounded-[16px] border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col h-full w-[320px] md:w-[400px] shrink-0"
+      data-tilt
+      data-cursor="view"
     >
       {/* TOP — Icon Area */}
       <Link
@@ -134,12 +137,13 @@ const ServiceCard = ({ service }: { service: typeof SERVICES_DATA[0] }) => {
 
 export const ServicesHorizontalScroll = () => {
   const isMobile = useIsMobile();
+  const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Only run on desktop
-    if (isMobile || !containerRef.current || !trackRef.current) return;
+    if (isMobile || shouldReduceMotion || !containerRef.current || !trackRef.current) return;
 
     const container = containerRef.current;
     const track = trackRef.current;
@@ -172,7 +176,7 @@ export const ServicesHorizontalScroll = () => {
       clearTimeout(timer);
       if (ctx) ctx.revert();
     };
-  }, [isMobile]);
+  }, [isMobile, shouldReduceMotion]);
 
   // Mobile layout (XScroll)
   if (isMobile) {

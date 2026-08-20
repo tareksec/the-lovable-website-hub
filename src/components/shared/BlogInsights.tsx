@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Calendar, User, Clock } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { publicApi, Post } from "@/lib/publicApi";
@@ -33,6 +33,8 @@ const BlogCard = ({ post, index }: { post: Post; index: number }) => {
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="group bg-white rounded-[24px] shadow-bec-soft border border-gray-100/60 hover:shadow-bec-soft-hover hover:border-bec-emerald/20 hover:-translate-y-2 transition-all duration-500 overflow-hidden flex flex-col h-full w-[300px] md:w-[380px] shrink-0"
+      data-tilt
+      data-cursor="view"
     >
       {/* TOP — Cover image */}
       <Link
@@ -44,6 +46,7 @@ const BlogCard = ({ post, index }: { post: Post; index: number }) => {
           src={post.coverImageUrl || BLOG_IMAGES[index % BLOG_IMAGES.length]}
           alt={post.title}
           className="w-full h-full object-cover"
+          data-editorial-image
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.4 }}
         />
@@ -113,12 +116,13 @@ export const BlogInsights = () => {
   });
 
   const isMobile = useIsMobile();
+  const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Only run on desktop when we have posts
-    if (isMobile || !containerRef.current || !trackRef.current || isLoading || !posts?.length) return;
+    if (isMobile || shouldReduceMotion || !containerRef.current || !trackRef.current || isLoading || !posts?.length) return;
 
     const container = containerRef.current;
     const track = trackRef.current;
@@ -151,7 +155,7 @@ export const BlogInsights = () => {
       clearTimeout(timer);
       if (ctx) ctx.revert();
     };
-  }, [isMobile, posts, isLoading]);
+  }, [isMobile, shouldReduceMotion, posts, isLoading]);
 
   // Mobile layout (original XScroll)
   if (isMobile) {

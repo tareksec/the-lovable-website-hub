@@ -115,7 +115,9 @@ function PostsTab() {
     return data;
   });
 
+  const queryClient = useQueryClient();
   const [form, setForm] = useState({
+    id: null as number | null,
     title: "",
     slug: "",
     category: "Career Tips",
@@ -151,28 +153,41 @@ function PostsTab() {
     return () => clearInterval(timer);
   }, [form.title, form.content]);
 
-  const create = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.from("posts").insert({
+  const savePost = useMutation({
+    mutationFn: async (vars: { published: boolean }) => {
+      // Create a unique slug if this is a new post and no slug is provided
+      let finalSlug = form.slug;
+      if (!finalSlug) {
+        const baseSlug = form.title
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
+        finalSlug = form.id ? baseSlug : `${baseSlug}-${Math.random().toString(36).substring(2, 8)}`;
+      }
+
+      const postData = {
         title: form.title,
-        slug:
-          form.slug ||
-          form.title
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-|-$/g, ""),
+        slug: finalSlug,
         category: form.category,
         excerpt: form.excerpt || null,
         content: form.content,
         tags: form.tags,
         cover_image_url: form.cover || null,
-        published: form.published,
-      });
-      if (error) throw error;
+        published: vars.published,
+      };
+
+      if (form.id) {
+        const { error } = await supabase.from("posts").update(postData).eq("id", form.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("posts").insert(postData);
+        if (error) throw error;
+      }
     },
-    onSuccess: () => {
-      toast.success(form.published ? "Post published" : "Draft saved");
+    onSuccess: (_, vars) => {
+      toast.success(vars.published ? "Post published" : "Draft saved");
       setForm({
+        id: null,
         title: "",
         slug: "",
         category: "Career Tips",
@@ -184,6 +199,8 @@ function PostsTab() {
       });
       setLastSaved(null);
       refresh();
+      // Invalidate public posts query to immediately show updates on /resources
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -216,7 +233,25 @@ function PostsTab() {
           <p className="text-sm text-gray-500 col-span-full text-center py-12">Loading posts...</p>
         )}
         {filteredData?.map((p) => (
-          <PostCard key={p.id} post={p} onRemove={remove.mutate} />
+          <PostCard 
+            key={p.id} 
+            post={p} 
+            onRemove={remove.mutate} 
+            onEdit={() => {
+              setForm({
+                id: p.id,
+                title: p.title,
+                slug: p.slug,
+                category: p.category,
+                excerpt: p.excerpt || "",
+                content: p.content || "",
+                tags: p.tags || "",
+                cover: p.cover_image_url || "",
+                published: p.published,
+              });
+              window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }}
+          />
         ))}
       </div>
 
@@ -273,23 +308,21 @@ function PostsTab() {
             <div className="grid grid-cols-2 gap-3 mb-4">
               <button
                 onClick={() => {
-                  setForm({ ...form, published: false });
-                  create.mutate();
+                  savePost.mutate({ published: false });
                 }}
-                disabled={create.isPending}
+                disabled={savePost.isPending}
                 className="flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-[#08735d] text-[#08735d] font-[800] text-xs hover:bg-[#08735d]/5 active:scale-95 transition-all"
               >
                 <Save size={14} /> Save Draft
               </button>
               <button
                 onClick={() => {
-                  setForm({ ...form, published: true });
-                  create.mutate();
+                  savePost.mutate({ published: true });
                 }}
-                disabled={create.isPending}
+                disabled={savePost.isPending}
                 className="flex items-center justify-center gap-2 py-3 rounded-xl bg-[#08735d] text-white font-[800] text-xs hover:bg-[#065c4a] active:scale-95 transition-all shadow-sm"
               >
-                <Send size={14} /> {form.published ? "Update" : "Publish"}
+                <Send size={14} /> {form.id ? (form.published ? "Update" : "Publish") : "Publish"}
               </button>
             </div>
 
@@ -387,6 +420,21 @@ function PostsTab() {
                 />
               </div>
             </div>
+
+            {form.id && (
+              <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setForm({
+                    id: null, title: "", slug: "", category: "Career Tips",
+                    excerpt: "", content: "", tags: "", cover: "", published: false
+                  })}
+                  className="text-xs font-bold text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  Cancel Edit
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -398,18 +446,20 @@ const PostCard = memo(
   ({
     post: p,
     onRemove,
+    onEdit,
   }: {
-    post: { id: number; title: string; category: string; slug: string; published: boolean };
+    post: any;
     onRemove: (id: number) => void;
+    onEdit: () => void;
   }) => (
-    <div className={`${card} group`}>
+    <div className={`${card} group cursor-pointer`} onClick={onEdit}>
       <div className="flex justify-between items-start mb-3">
         <span
           className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${p.published ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}
         >
           {p.published ? "Published" : "Draft"}
         </span>
-        <DeleteButton onConfirm={() => onRemove(p.id)} size={16} label="Delete post" />
+        <DeleteButton onConfirm={(e) => { e.stopPropagation(); onRemove(p.id); }} size={16} label="Delete post" />
       </div>
       <h3 className="font-bold text-[#14202d] line-clamp-1">{p.title}</h3>
       <p className="text-[11px] text-gray-400 mt-1 uppercase tracking-tight">

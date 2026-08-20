@@ -195,13 +195,15 @@ export default function Home() {
         className="bec-reference-hero"
         aria-labelledby="bec-reference-heading"
       >
-        <motion.img
-          src="/images/bec-reference.png"
-          alt="Bangladesh Executive Chamber homepage: building people, strengthening brands, and shaping Bangladesh"
-          width="1536"
-          height="1024"
-          style={{ y: shouldReduceMotion ? 0 : heroParallaxY }}
-        />
+        <div className="bec-reference-hero-parallax" data-hero-parallax>
+          <motion.img
+            src="/images/bec-reference.png"
+            alt="Bangladesh Executive Chamber homepage: building people, strengthening brands, and shaping Bangladesh"
+            width="1536"
+            height="1024"
+            style={{ y: shouldReduceMotion ? 0 : heroParallaxY }}
+          />
+        </div>
         <h1 id="bec-reference-heading" className="sr-only">
           Building People. Strengthening Brands. Shaping Bangladesh.
         </h1>
@@ -230,11 +232,13 @@ export default function Home() {
             to="/services"
             aria-label="Explore Our Services"
             className="reference-link reference-explore"
+            data-magnetic
           />
           <Link
             to="/join"
             aria-label="Join Our Network"
             className="reference-link reference-network"
+            data-magnetic
           />
         </div>
         <div className="bec-reference-service-overlay" aria-label="BEC services">
@@ -245,6 +249,8 @@ export default function Home() {
               hash={service.id}
               aria-label={`Learn more about ${service.label}`}
               className={`reference-link reference-service-${service.id}`}
+              data-magnetic
+              data-cursor="view"
             />
           ))}
         </div>
@@ -293,7 +299,7 @@ export default function Home() {
           </Reveal>
           <div className="bec-actions">
             <Reveal delay={1} width="auto">
-              <Link to="/services" className="bec-button bec-primary" data-testid="link-explore-services">
+              <Link to="/services" className="bec-button bec-primary" data-magnetic data-testid="link-explore-services">
                 Explore Our Services
               </Link>
             </Reveal>
@@ -301,6 +307,7 @@ export default function Home() {
               <Link
                 to="/join"
                 className="bec-secondary bec-btn-hover"
+                data-magnetic
                 data-testid="link-join-network"
               >
                 Join Our Network <UsersRound aria-hidden="true" />
@@ -328,8 +335,9 @@ export default function Home() {
               <StaggerItem key={title}>
                 <motion.div
                   className="bec-service"
+                  data-tilt
+                  data-cursor="view"
                   data-testid={`service-${title.toLowerCase().replaceAll(" ", "-")}`}
-                  whileHover={{ x: 5 }}
                 >
                   <div className="bec-service-icon">
                     <Icon aria-hidden="true" />
@@ -515,7 +523,7 @@ export default function Home() {
                   >
                     
                     {/* Hover Gradient Border effect (glow behind the card) */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#08735d]/20 to-[#c09643]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[20px] -z-10" />
+                    <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#08735d]/20 to-[#c09643]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[20px] -z-10" />
                     
                     {/* Left: Date Block */}
                     <div className="sm:w-[130px] bg-gradient-to-b from-gray-50 to-white border-b sm:border-b-0 sm:border-r border-gray-100 flex flex-row sm:flex-col items-center justify-center p-4 sm:p-6 shrink-0 group-hover:bg-[#08735d] transition-colors duration-500">
