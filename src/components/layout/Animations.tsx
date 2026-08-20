@@ -17,7 +17,7 @@ export const Reveal = ({
   className?: string;
 }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "0px 0px -12% 0px" });
   const shouldReduceMotion = useReducedMotion();
 
   const getInitial = () => {
@@ -42,11 +42,11 @@ export const Reveal = ({
         ref={ref}
         className={className}
         variants={{
-          hidden: getInitial(),
+          hidden: shouldReduceMotion ? { opacity: 1, y: 0, x: 0 } : getInitial(),
           visible: { opacity: 1, y: 0, x: 0 },
         }}
         initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        animate={isInView || shouldReduceMotion ? "visible" : "hidden"}
         transition={{
           duration: shouldReduceMotion ? 0 : 0.6,
           delay: shouldReduceMotion ? 0 : delay,
@@ -83,9 +83,9 @@ export const StaggerContainer = ({
             },
           },
         }}
-        initial="hidden"
+        initial={shouldReduceMotion ? "visible" : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true, margin: "0px 0px -12% 0px" }}
       >
         {children}
       </m.div>
@@ -106,7 +106,7 @@ export const StaggerItem = ({
       <m.div
         className={className}
         variants={{
-          hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+          hidden: { opacity: shouldReduceMotion ? 1 : 0, y: 0 },
           visible: { opacity: 1, y: 0 },
         }}
         transition={{ 

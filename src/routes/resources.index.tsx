@@ -18,7 +18,7 @@ export const Route = createFileRoute("/resources/")({
           "Articles, guides, and insights on careers, branding, and business growth from BEC.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/resources" },
+      { rel: "canonical", href: "https://www.thebec.site/resources" },
     ],
   }),
 });

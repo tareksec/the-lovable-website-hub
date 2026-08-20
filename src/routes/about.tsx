@@ -18,7 +18,7 @@ export const Route = createFileRoute("/about")({
           "Learn about BEC's mission to empower professionals and build Bangladesh's strongest corporate community.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/about" },
+      { rel: "canonical", href: "https://www.thebec.site/about" },
     ],
   }),
 });

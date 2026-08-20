@@ -3,10 +3,11 @@ import { Link } from "@tanstack/react-router";
 import PageTransition from "@/components/layout/PageTransition";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/layout/Animations";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const services = [
   {
-    id: "talent",
+    id: "talent-solutions",
     icon: Users,
     image:
       "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=800",
@@ -21,7 +22,7 @@ const services = [
     ],
   },
   {
-    id: "consulting",
+    id: "business-consulting",
     icon: BriefcaseBusiness,
     image:
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=800",
@@ -36,7 +37,7 @@ const services = [
     ],
   },
   {
-    id: "training",
+    id: "training-development",
     icon: GraduationCap,
     image:
       "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800",
@@ -51,7 +52,7 @@ const services = [
     ],
   },
   {
-    id: "networking",
+    id: "networking-community",
     icon: Network,
     image:
       "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=800",
@@ -68,6 +69,12 @@ const services = [
 ];
 
 export default function Services() {
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const targetId = window.location.hash.slice(1);
+    requestAnimationFrame(() => document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" }));
+  }, []);
+
   return (
     <PageTransition className="bec-services-page">
       {/* Hero Section */}
@@ -116,8 +123,8 @@ export default function Services() {
                 <div key={svc.id} className="relative">
                   <Reveal y={40} delay={i * 0.1}>
                     <div
-                      className={`flex flex-col md:flex-row items-center gap-16 ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}
                       id={svc.id}
+                      className={`scroll-mt-24 flex flex-col items-center gap-16 md:flex-row ${i % 2 === 1 ? "md:flex-row-reverse" : ""}`}
                     >
                       {/* Image Part */}
                       <div className="w-full md:w-1/2">

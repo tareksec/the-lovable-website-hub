@@ -18,7 +18,7 @@ export const Route = createFileRoute("/join")({
           "Become a member of the Bangladesh Executive Chamber and grow your career, network, and brand.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/join" },
+      { rel: "canonical", href: "https://www.thebec.site/join" },
     ],
   }),
 });

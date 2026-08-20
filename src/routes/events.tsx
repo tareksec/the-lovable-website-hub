@@ -18,7 +18,7 @@ export const Route = createFileRoute("/events")({
           "Upcoming BEC workshops, summits, and networking events for professionals in Bangladesh.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/events" },
+      { rel: "canonical", href: "https://www.thebec.site/events" },
     ],
   }),
 });

@@ -18,7 +18,7 @@ export const Route = createFileRoute("/reviews")({
           "What members and partners say about working with the Bangladesh Executive Chamber.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/reviews" },
+      { rel: "canonical", href: "https://www.thebec.site/reviews" },
     ],
   }),
 });

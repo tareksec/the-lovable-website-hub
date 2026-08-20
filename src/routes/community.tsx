@@ -16,7 +16,7 @@ export const Route = createFileRoute("/community")({
         content: "Join 10,000+ professionals in BEC's thriving community across Bangladesh.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/community" },
+      { rel: "canonical", href: "https://www.thebec.site/community" },
     ],
   }),
 });

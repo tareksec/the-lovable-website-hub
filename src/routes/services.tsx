@@ -18,7 +18,7 @@ export const Route = createFileRoute("/services")({
           "Talent Acquisition, Business Consulting, Training & Workshops, and Networking — BEC offers complete professional growth solutions.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/services" },
+      { rel: "canonical", href: "https://www.thebec.site/services" },
     ],
   }),
 });

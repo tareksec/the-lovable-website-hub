@@ -18,7 +18,7 @@ export const Route = createFileRoute("/contact")({
           "Get in touch with the Bangladesh Executive Chamber team for partnerships, services, or general enquiries.",
       },
       { property: "og:image", content: "/og-image.png" },
-      { rel: "canonical", href: "https://bec.com/contact" },
+      { rel: "canonical", href: "https://www.thebec.site/contact" },
     ],
   }),
 });

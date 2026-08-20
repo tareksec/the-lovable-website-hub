@@ -75,6 +75,8 @@ const ServiceCard = ({ service }: { service: typeof SERVICES_DATA[0] }) => {
       {/* TOP — Icon Area */}
       <Link
         to="/services"
+        hash={service.id}
+        aria-label={`Learn more about ${service.title}`}
         className="relative h-[200px] overflow-hidden shrink-0 bg-gradient-to-b from-gray-50/80 to-white flex items-center justify-center border-b border-gray-50"
       >
         {/* Subtle technical grid background */}
@@ -104,7 +106,7 @@ const ServiceCard = ({ service }: { service: typeof SERVICES_DATA[0] }) => {
           </span>
         </div>
 
-        <Link to="/services" className="block group/title">
+        <Link to="/services" hash={service.id} className="block group/title" aria-label={`Learn more about ${service.title}`}>
           <h3 className="text-2xl font-bold text-bec-navy leading-snug mb-3 group-hover/title:text-bec-emerald transition-colors">
             {service.title}
           </h3>
@@ -117,6 +119,8 @@ const ServiceCard = ({ service }: { service: typeof SERVICES_DATA[0] }) => {
         <div className="mt-auto pt-5 border-t border-gray-50">
           <Link
             to="/services"
+            hash={service.id}
+            aria-label={`Explore ${service.title}`}
             className="inline-flex items-center gap-2 text-bec-navy hover:text-bec-emerald text-sm font-semibold transition-colors group/btn"
           >
             Explore Service

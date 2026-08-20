@@ -4,6 +4,7 @@ import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
 import { CheckCircle2, Sparkles, Zap, Building2 } from "lucide-react";
 import { useRef } from "react";
+import { Link } from "@tanstack/react-router";
 
 const plans = [
   {
@@ -169,7 +170,9 @@ export default function PricingSection5() {
               </CardHeader>
 
               <CardContent className="pt-0 px-8 pb-10 flex-1 flex flex-col relative z-10">
-                <button
+                <Link
+                  to={plan.name === "Corporate" ? "/contact" : "/join"}
+                  aria-label={`${plan.buttonText} membership`}
                   className={`w-full mb-10 py-4 px-6 text-[15px] font-bold rounded-2xl transition-all duration-300 active:scale-95 flex items-center justify-center gap-2 ${
                     plan.popular
                       ? "bg-white text-[#08735d] shadow-[0_8px_20px_-6px_rgba(255,255,255,0.4)] hover:shadow-[0_12px_25px_-6px_rgba(255,255,255,0.5)] hover:-translate-y-1"
@@ -177,7 +180,7 @@ export default function PricingSection5() {
                   }`}
                 >
                   {plan.buttonText}
-                </button>
+                </Link>
 
                 <div className="space-y-5 mt-auto">
                   <h4

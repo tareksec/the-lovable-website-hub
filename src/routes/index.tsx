@@ -20,9 +20,9 @@ export const Route = createFileRoute("/")({
         content:
           "BEC is Bangladesh's premier professional ecosystem for career development, business consulting, talent acquisition, and professional networking.",
       },
-      { property: "og:image", content: "/og-image.png" },
-      { property: "og:url", content: "https://bec.com" },
-      { rel: "canonical", href: "https://bec.com" },
+      { property: "og:image", content: "https://www.thebec.site/og-image.png" },
+      { property: "og:url", content: "https://www.thebec.site" },
+      { rel: "canonical", href: "https://www.thebec.site" },
     ],
     scripts: [
       {
@@ -32,8 +32,8 @@ export const Route = createFileRoute("/")({
           "@type": "Organization",
           name: "Bangladesh Executive Chamber",
           alternateName: "BEC",
-          url: "https://bec.com",
-          logo: "https://bec.com/logo.png",
+          url: "https://www.thebec.site",
+          logo: "https://www.thebec.site/logo.png",
           description:
             "Professional ecosystem for career development and business consulting in Bangladesh",
           address: {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Reveal } from "@/components/layout/Animations";
 
 export interface StickyFeature {
   title: string;
@@ -75,6 +76,17 @@ const AnimatedHeader = ({ title, subtitle }: { title?: string; subtitle?: string
 
 // This is the main component that orchestrates everything.
 export function StickyFeatureSection({ features, title, subtitle }: StickyScrollCardsProps) {
+  const [openFeatures, setOpenFeatures] = useState(() => new Set(features.map((_, index) => index)));
+
+  const toggleFeature = (index: number) => {
+    setOpenFeatures((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
   return (
     <div className="bg-transparent font-sans w-full">
       <div className="w-full">
@@ -86,21 +98,34 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
             {/* The container for the sticky cards */}
             <div className="w-full">
               {features.map((feature, index) => (
-                <div
-                  key={index}
-                  // The sticky class makes the card stick to the top of the container on desktop.
-                  className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 p-10 md:p-14 rounded-[32px] mb-16 static md:sticky shadow-bec-soft hover:shadow-bec-soft-hover transition-shadow border border-gray-100/60`}
-                  // All cards will stick at the same position, creating the stacking effect.
-                  style={{ top: "120px" }}
-                >
+                <Reveal key={index} y={28} delay={index * 0.06}>
+                  <div
+                    // The sticky class makes the card stick to the top of the container on desktop.
+                    className={`${feature.bgColor} grid grid-cols-1 md:grid-cols-2 items-center gap-8 md:gap-16 p-10 md:p-14 rounded-[32px] mb-16 static md:sticky shadow-bec-soft hover:shadow-bec-soft-hover transition-shadow border border-gray-100/60`}
+                    // All cards will stick at the same position, creating the stacking effect.
+                    style={{ top: "120px" }}
+                  >
                   {/* Card Content */}
                   <div className="flex flex-col justify-center">
-                    <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d]">
-                      {feature.title}
-                    </h3>
-                    <p className={`${feature.textColor} text-[15px] leading-relaxed`}>
-                      {feature.description}
-                    </p>
+                    <button
+                      type="button"
+                      className="text-left"
+                      aria-expanded={openFeatures.has(index)}
+                      aria-controls={`faq-answer-${index}`}
+                      onClick={() => toggleFeature(index)}
+                    >
+                      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#14202d]">
+                        {feature.title}
+                      </h3>
+                    </button>
+                    <div
+                      id={`faq-answer-${index}`}
+                      hidden={!openFeatures.has(index)}
+                    >
+                      <p className={`${feature.textColor} text-[15px] leading-relaxed`}>
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Card Image */}
@@ -120,7 +145,8 @@ export function StickyFeatureSection({ features, title, subtitle }: StickyScroll
                       }}
                     />
                   </div>
-                </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </section>

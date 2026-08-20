@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import PageTransition from "@/components/layout/PageTransition";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Reveal, StaggerContainer, StaggerItem } from "@/components/layout/Animations";
 import { useQuery } from "@tanstack/react-query";
 import { publicApi } from "@/lib/publicApi";
@@ -90,21 +90,12 @@ const processSteps = [
   { step: 4, title: "Grow Together", desc: "Scale new heights with BEC ecosystem support." },
 ];
 
-const partnerLogos = [
-  "https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png",
-  "https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png",
-  "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-  "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-];
-
 const AnimatedValue = ({ value }: { value: string }) => {
   const numericValue = parseInt(value.replace(/[^0-9]/g, "")) || 0;
   const suffix = value.replace(/[0-9,]/g, "");
   const [current, setCurrent] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
     if (!isInView || numericValue <= 0) return;
@@ -130,14 +121,29 @@ const AnimatedValue = ({ value }: { value: string }) => {
   if (numericValue === 0) return <span>{value}</span>;
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="inline-block min-w-[2ch]">
       {current.toLocaleString()}
       {suffix}
     </span>
   );
 };
 
+const serviceDestinations = [
+  { id: "talent-solutions", label: "Talent Solutions" },
+  { id: "business-consulting", label: "Business Consulting" },
+  { id: "training-development", label: "Training & Development" },
+  { id: "networking-community", label: "Networking & Community" },
+];
+
 export default function Home() {
+  const heroRef = useRef<HTMLElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroParallaxY = useTransform(heroScrollProgress, [0, 1], [0, -18]);
+
   const titleWords = "Building People. Strengthening Brands. Shaping Bangladesh".split(" ");
 
   const marqueeText =
@@ -146,6 +152,24 @@ export default function Home() {
     .split(" ◆ ")
     .filter((i) => i.trim() !== "")
     .map((i) => i.replace("◆", "").trim());
+
+  const { data: statsData } = useQuery({
+    queryKey: ["site-stats"],
+    queryFn: publicApi.community.getStats,
+  });
+
+  const iconsList = [UsersRound, Building2, BriefcaseBusiness, Landmark, Globe2];
+  
+  const primaryStats = statsData?.stats
+    ?.filter((stat) => ["professionals", "partners", "opportunities", "trainings"].includes(stat.key))
+    .slice(0, 4)
+    .map((stat, i) => ({
+      icon: iconsList[i],
+      value: stat.value,
+      label: stat.label,
+      sub: "",
+    }));
+  const displayMetrics = [...(primaryStats?.length === 4 ? primaryStats : metrics.slice(0, 4)), metrics[4]];
 
   const { data: postsData } = useQuery({
     queryKey: ["latest-posts"],
@@ -166,7 +190,74 @@ export default function Home() {
 
   return (
     <PageTransition>
-      <section className="bec-hero" aria-labelledby="bec-heading">
+      <section
+        ref={heroRef}
+        className="bec-reference-hero"
+        aria-labelledby="bec-reference-heading"
+      >
+        <motion.img
+          src="/images/bec-reference.png"
+          alt="Bangladesh Executive Chamber homepage: building people, strengthening brands, and shaping Bangladesh"
+          width="1536"
+          height="1024"
+          style={{ y: shouldReduceMotion ? 0 : heroParallaxY }}
+        />
+        <h1 id="bec-reference-heading" className="sr-only">
+          Building People. Strengthening Brands. Shaping Bangladesh.
+        </h1>
+        <nav className="bec-reference-nav-overlay" aria-label="Primary navigation">
+          <Link to="/" aria-label="Home" className="reference-link reference-home" />
+          <Link to="/about" aria-label="About Us" className="reference-link reference-about" />
+          <Link
+            to="/services"
+            aria-label="Our Services"
+            className="reference-link reference-services"
+          />
+          <Link
+            to="/resources"
+            aria-label="Resources"
+            className="reference-link reference-resources"
+          />
+          <Link
+            to="/contact"
+            aria-label="Connect Us"
+            className="reference-link reference-contact"
+          />
+          <Link to="/join" aria-label="Join BEC" className="reference-link reference-join" />
+        </nav>
+        <div className="bec-reference-cta-overlay" aria-label="Hero actions">
+          <Link
+            to="/services"
+            aria-label="Explore Our Services"
+            className="reference-link reference-explore"
+          />
+          <Link
+            to="/join"
+            aria-label="Join Our Network"
+            className="reference-link reference-network"
+          />
+        </div>
+        <div className="bec-reference-service-overlay" aria-label="BEC services">
+          {serviceDestinations.map((service) => (
+            <Link
+              key={service.id}
+              to="/services"
+              hash={service.id}
+              aria-label={`Learn more about ${service.label}`}
+              className={`reference-link reference-service-${service.id}`}
+            />
+          ))}
+        </div>
+        <div className="bec-reference-stats-overlay" aria-label="BEC impact metrics">
+          {displayMetrics.slice(0, 4).map(({ value, label }) => (
+            <div className="reference-stat-value" key={label} aria-label={`${value} ${label}`}>
+              <AnimatedValue value={value} />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bec-hero legacy-home-hero" aria-labelledby="bec-heading">
         <div className="bec-backdrop" aria-hidden="true" />
         <div className="bec-dots" aria-hidden="true" />
         <div className="bec-ribbon" aria-hidden="true" />
@@ -255,7 +346,7 @@ export default function Home() {
       </section>
 
       {/* SECTION 1: MARQUEE STRIP */}
-      <div className="bec-marquee-strip">
+      <div className="bec-marquee-strip legacy-home-marquee">
         <div className="bec-marquee-content">
           {[1, 2, 3].map((loop) => (
             <div key={loop} className="flex">
@@ -272,24 +363,28 @@ export default function Home() {
 
       {/* STATS BAR - Upgraded with SVG icons and padding */}
       <section
-        className="bec-section bg-white border-y border-gray-100/60"
+        className="bec-section legacy-home-stats bg-white border-y border-gray-100/60"
         aria-label="BEC impact metrics"
       >
         <div className="bec-container">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-            {metrics.map(({ icon: Icon, value, label, sub }) => (
-              <Reveal key={value} y={30}>
-                <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-white shadow-sm border border-gray-100 hover:shadow-bec-soft transition-shadow duration-300">
-                  <div className="w-14 h-14 bg-bec-emerald/10 rounded-full flex items-center justify-center mb-5 text-bec-emerald">
+            {displayMetrics.map(({ icon: Icon, value, label, sub }, idx) => (
+              <Reveal key={`${value}-${idx}`} y={30}>
+                <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-white shadow-sm border border-gray-100 hover:shadow-bec-soft transition-shadow duration-300 h-full">
+                  <div className="w-14 h-14 bg-bec-emerald/10 rounded-full flex items-center justify-center mb-5 text-bec-emerald shrink-0">
                     <Icon size={26} strokeWidth={2.5} />
                   </div>
                   <div className="text-4xl font-extrabold text-bec-emerald leading-none mb-3">
                     <AnimatedValue value={value} />
                   </div>
-                  <div className="text-sm font-semibold text-gray-600 leading-snug">
+                  <div className="text-sm font-semibold text-gray-600 leading-snug mt-auto">
                     {label}
-                    <br />
-                    <span className="text-gray-400 font-medium">{sub}</span>
+                    {sub && (
+                      <>
+                        <br />
+                        <span className="text-gray-400 font-medium">{sub}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </Reveal>
@@ -312,17 +407,13 @@ export default function Home() {
       {/* SECTION 4 — Our Community Partners */}
       <section className="bec-section bg-bec-offwhite overflow-hidden">
         <div className="bec-container">
-          <Reveal className="text-center mb-16">
+          <Reveal className="text-center">
             <span className="bec-subtitle-chip mb-4">Our Network</span>
             <h2>Trusted by Leading Organizations</h2>
+            <p className="mt-6 text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed">
+              Our partner network is growing — check back soon for updates on our latest collaborations and corporate partners.
+            </p>
           </Reveal>
-          <div className="bec-logo-strip">
-            <div className="bec-logo-strip-content">
-              {[...partnerLogos, ...partnerLogos].map((logo, i) => (
-                <img key={i} src={logo} alt="Partner Logo" />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 

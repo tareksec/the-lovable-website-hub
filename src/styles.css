@@ -683,6 +683,121 @@
   margin: 0 auto;
 }
 
+/* The supplied artwork is the desktop source of truth for the homepage. */
+.bec-reference-hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  line-height: 0;
+  background: #fbfcfb;
+}
+
+.bec-reference-hero > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
+.bec-reference-nav-overlay,
+.bec-reference-cta-overlay,
+.bec-reference-service-overlay,
+.bec-reference-stats-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bec-reference-hero .reference-link {
+  position: absolute;
+  display: block;
+  pointer-events: auto;
+  border-radius: 999px;
+}
+
+.bec-reference-hero .reference-link:focus-visible {
+  outline: 2px solid #08735d;
+  outline-offset: 3px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.reference-home { left: 49%; top: 4%; width: 5%; height: 5%; }
+.reference-about { left: 55%; top: 4%; width: 6%; height: 5%; }
+.reference-services { left: 62%; top: 4%; width: 8%; height: 5%; }
+.reference-resources { left: 70%; top: 4%; width: 8%; height: 5%; }
+.reference-contact { left: 79%; top: 4%; width: 7%; height: 5%; }
+.reference-join { left: 88%; top: 3%; width: 9%; height: 6%; }
+.reference-explore { left: 4%; top: 60%; width: 14%; height: 6%; }
+.reference-network { left: 19%; top: 60%; width: 14%; height: 6%; }
+
+.reference-service-talent-solutions { left: 79%; top: 14%; width: 20%; height: 11%; }
+.reference-service-business-consulting { left: 79%; top: 27%; width: 20%; height: 11%; }
+.reference-service-training-development { left: 79%; top: 40%; width: 20%; height: 11%; }
+.reference-service-networking-community { left: 79%; top: 53%; width: 20%; height: 11%; }
+
+.bec-reference-stats-overlay {
+  left: 17.5%;
+  right: 8.5%;
+  top: 77.5%;
+  bottom: 8%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: start;
+  pointer-events: none;
+}
+
+.reference-stat-value {
+  width: max-content;
+  min-width: 7ch;
+  margin-top: 5%;
+  padding: 0 3px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #08735d;
+  font-size: clamp(14px, 1.55vw, 25px);
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.reference-stat-value > span {
+  display: inline-block;
+  min-width: 6ch;
+  text-align: left;
+}
+
+.bec-reference-hero .reference-link:hover {
+  background: rgba(8, 115, 93, 0.07);
+}
+
+.bec-page:has(.bec-reference-hero) .bec-header-container,
+.bec-page:has(.bec-reference-hero) .legacy-home-hero,
+.bec-page:has(.bec-reference-hero) .legacy-home-marquee,
+.bec-page:has(.bec-reference-hero) .legacy-home-stats {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .bec-reference-hero .reference-home,
+  .bec-reference-hero .reference-about,
+  .bec-reference-hero .reference-services,
+  .bec-reference-hero .reference-resources,
+  .bec-reference-hero .reference-contact,
+  .bec-reference-hero .reference-join {
+    height: 8%;
+  }
+
+  .bec-reference-hero .reference-explore,
+  .bec-reference-hero .reference-network {
+    top: 60%;
+    height: 7%;
+  }
+
+  .reference-stat-value {
+    font-size: 2.1vw;
+  }
+}
+
 .bec-backdrop {
   position: absolute;
   right: -10%;

@@ -81,14 +81,19 @@ export default function Footer() {
               Quick Links
             </h4>
             <ul className="space-y-4">
-              {["Home", "About Us", "Our Services", "Community"].map((link) => (
-                <li key={link}>
+              {[
+                { label: "Home", to: "/" },
+                { label: "About Us", to: "/about" },
+                { label: "Our Services", to: "/services" },
+                { label: "Community", to: "/community" },
+              ].map((link) => (
+                <li key={link.label}>
                   <Link
-                    to={link === "Home" ? "/" : `/${link.toLowerCase().replace(" ", "-")}`}
+                    to={link.to}
                     className="text-gray-400/80 text-[14px] hover:text-white transition-colors flex items-center gap-2 group/link"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#08735d] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link}</span>
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link.label}</span>
                   </Link>
                 </li>
               ))}
@@ -99,14 +104,19 @@ export default function Footer() {
           <StaggerItem className="col-span-1 lg:col-span-2 lg:ml-auto">
             <h4 className="text-white font-[700] mb-8 tracking-[0.15em] uppercase text-[11px] opacity-80">Explore</h4>
             <ul className="space-y-4">
-              {["Events", "Reviews", "Resources", "Join BEC"].map((link) => (
-                <li key={link}>
+              {[
+                { label: "Events", to: "/events" },
+                { label: "Reviews", to: "/reviews" },
+                { label: "Resources", to: "/resources" },
+                { label: "Join BEC", to: "/join" },
+              ].map((link) => (
+                <li key={link.label}>
                   <Link
-                    to={`/${link.toLowerCase().replace(" ", "-")}`}
+                    to={link.to}
                     className="text-gray-400/80 text-[14px] hover:text-white transition-colors flex items-center gap-2 group/link"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#08735d] opacity-0 group-hover/link:opacity-100 transition-opacity" />
-                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link}</span>
+                    <span className="group-hover/link:translate-x-1 transition-transform duration-300">{link.label}</span>
                   </Link>
                 </li>
               ))}
