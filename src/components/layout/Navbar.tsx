@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/community", label: "Community" },
   { to: "/events", label: "Events" },
   { to: "/reviews", label: "Reviews" },
-  { to: "/resources", label: "Resources" },
+  { to: "/resources", label: "Blogs" },
   { to: "/contact", label: "Contact Us" },
 ] as const;
 

@@ -97,7 +97,7 @@ export default function Footer() {
               {[
                 { label: "Events", to: "/events" },
                 { label: "Reviews", to: "/reviews" },
-                { label: "Resources", to: "/resources" },
+                { label: "Blogs", to: "/resources" },
                 { label: "Join BEC", to: "/join" },
               ].map((link) => (
                 <li key={link.label}>
