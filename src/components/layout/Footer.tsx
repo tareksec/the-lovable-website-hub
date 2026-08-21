@@ -165,7 +165,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-[13px] text-gray-500">
-            &copy; {new Date().getFullYear()} Bangladesh Executive Chamber. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Bangladesh Executive Chamber. All Rights Reserved. | Developed by <a href="https://artx.techvrs.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Artx TechVRS</a> &amp; <a href="https://www.linkedin.com/in/mdtarek404/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Md Tarek</a>
           </p>
           <div className="flex items-center gap-6 text-[13px] text-gray-500">
             <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
