@@ -12,7 +12,6 @@ import {
   Award,
   Heart,
   Map,
-  Search,
   Calendar,
   MapPin,
   User,
@@ -29,7 +28,8 @@ import Testimonials from "@/components/ui/testimonials-13";
 import PricingSection5 from "@/components/ui/pricing";
 import { FAQSection } from "@/components/shared/FAQSection";
 import { BlogInsights } from "@/components/shared/BlogInsights";
-import { ServicesHorizontalScroll } from "@/components/shared/ServicesHorizontalScroll";
+import { ServicesSection } from "@/components/shared/ServicesHorizontalScroll";
+import { HowItWorks } from "@/components/shared/HowItWorks";
 
 const services = [
   {
@@ -426,77 +426,10 @@ export default function Home() {
       </section>
 
       {/* SECTION 2 — HOW BEC WORKS */}
-      <section className="bec-section relative overflow-hidden bg-gray-50/50">
-        <div className="bec-container">
-          <div className="text-center mb-20">
-            <Reveal>
-              <span className="bec-subtitle-chip mb-4">How It Works</span>
-              <h2 className="mt-2">Your Journey With BEC</h2>
-            </Reveal>
-          </div>
-
-          <div className="relative">
-            {/* Desktop Dashed Connector */}
-            <div className="hidden md:block absolute top-[60px] left-0 w-full h-[2px] border-t-2 border-dashed border-[#08735d]/20 z-0" />
-
-            <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
-              {/* Step 1 */}
-              <StaggerItem>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-[140px] h-[140px] bg-white rounded-full shadow-bec-soft flex items-center justify-center mb-8 border border-gray-100 relative group transition-all hover:scale-105 hover:shadow-bec-soft-hover hover:border-bec-emerald/30">
-                    <div className="absolute top-0 right-0 w-12 h-12 bg-white text-bec-emerald rounded-full flex items-center justify-center font-bold border border-gray-100 shadow-sm text-lg z-10 group-hover:bg-bec-emerald group-hover:text-white transition-colors duration-300">
-                      01
-                    </div>
-                    <UsersRound size={56} className="text-bec-emerald opacity-90 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <h3 className="bec-card-title mb-4 text-2xl">Connect</h3>
-                  <p className="max-w-xs text-gray-600 leading-relaxed">
-                    Reach out through our platform or LinkedIn. Share your professional goals with
-                    the BEC team.
-                  </p>
-                </div>
-              </StaggerItem>
-
-              {/* Step 2 */}
-              <StaggerItem>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-[140px] h-[140px] bg-white rounded-full shadow-bec-soft flex items-center justify-center mb-8 border border-gray-100 relative group transition-all hover:scale-105 hover:shadow-bec-soft-hover hover:border-bec-emerald/30">
-                    <div className="absolute top-0 right-0 w-12 h-12 bg-white text-bec-emerald rounded-full flex items-center justify-center font-bold border border-gray-100 shadow-sm text-lg z-10 group-hover:bg-bec-emerald group-hover:text-white transition-colors duration-300">
-                      02
-                    </div>
-                    <Search size={56} className="text-bec-emerald opacity-90 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <h3 className="bec-card-title mb-4 text-2xl">Assess</h3>
-                  <p className="max-w-xs text-gray-600 leading-relaxed">
-                    Our experts review your profile and match you with the right talent placement or
-                    training program.
-                  </p>
-                </div>
-              </StaggerItem>
-
-              {/* Step 3 */}
-              <StaggerItem>
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-[140px] h-[140px] bg-white rounded-full shadow-bec-soft flex items-center justify-center mb-8 border border-gray-100 relative group transition-all hover:scale-105 hover:shadow-bec-soft-hover hover:border-bec-emerald/30">
-                    <div className="absolute top-0 right-0 w-12 h-12 bg-white text-bec-emerald rounded-full flex items-center justify-center font-bold border border-gray-100 shadow-sm text-lg z-10 group-hover:bg-bec-emerald group-hover:text-white transition-colors duration-300">
-                      03
-                    </div>
-                    <Globe2 size={56} className="text-bec-emerald opacity-90 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                  <h3 className="bec-card-title mb-4 text-2xl">Grow</h3>
-                  <p className="max-w-xs text-gray-600 leading-relaxed">
-                    Get placed, trained, or consulted. We stay with you through your entire growth
-                    journey.
-                  </p>
-                </div>
-              </StaggerItem>
-            </StaggerContainer>
-          </div>
-        </div>
-      </section>
+      <HowItWorks />
 
       {/* SECTION 3 — Services Horizontal Scroll */}
-      <ServicesHorizontalScroll />
+      <ServicesSection />
 
       {/* SECTION 5 — Upcoming Events Preview */}
       {eventsData && eventsData.length > 0 && (

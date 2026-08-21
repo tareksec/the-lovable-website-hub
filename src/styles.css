@@ -4549,6 +4549,289 @@ button[aria-expanded="true"] .bec-faq-icon { transform: rotate(45deg); }
   to { clip-path: inset(0 0 0 0); }
 }
 
+.bec-vertical-tabs-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.4fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: center;
+}
+
+.bec-vertical-tabs-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.bec-vertical-tab {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 0;
+  border: 0;
+  border-top: 1px solid rgba(20, 32, 45, 0.1);
+  background: transparent;
+  color: rgba(107, 114, 128, 0.68);
+  text-align: left;
+  cursor: pointer;
+  transition: color 240ms ease, transform 240ms ease;
+}
+
+.bec-vertical-tab:first-child { border-top: 0; }
+
+.bec-vertical-tab:hover,
+.bec-vertical-tab.is-active {
+  color: #14202d;
+}
+
+.bec-vertical-tab:hover { transform: translateX(4px); }
+
+.bec-vertical-tab-rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -12px;
+  width: 2px;
+  background: rgba(8, 115, 93, 0.14);
+}
+
+.bec-vertical-tab-progress {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  background: #08735d;
+  transform-origin: top;
+}
+
+.bec-vertical-tab-id {
+  min-width: 24px;
+  padding-top: 4px;
+  color: #c09643;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.bec-vertical-tab-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bec-vertical-tab-title {
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.bec-vertical-tab-description {
+  display: block;
+  max-width: 390px;
+  overflow: hidden;
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.bec-vertical-tabs-gallery {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(20, 32, 45, 0.1);
+  border-radius: 28px;
+  background: #edf6f2;
+  box-shadow: 0 18px 42px rgba(20, 32, 45, 0.12);
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.bec-vertical-tabs-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bec-vertical-tabs-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bec-vertical-tabs-gallery:hover .bec-vertical-tabs-image img { transform: scale(1.04); }
+
+.bec-vertical-tabs-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 32, 45, 0.68), transparent 48%);
+  pointer-events: none;
+}
+
+.bec-vertical-tabs-image-caption {
+  position: absolute;
+  right: 28px;
+  bottom: 28px;
+  left: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.bec-vertical-tabs-image-caption svg { width: 22px; height: 22px; color: #c09643; }
+
+.bec-vertical-tabs-controls {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.bec-vertical-tabs-controls button {
+  display: flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  background: rgba(251, 252, 251, 0.84);
+  color: #14202d;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.bec-vertical-tabs-controls button:hover { transform: translateY(-2px); background: #fff; }
+.bec-vertical-tabs-controls svg { width: 18px; height: 18px; }
+
+@media (max-width: 900px) {
+  .bec-vertical-tabs-grid { grid-template-columns: 1fr; gap: 24px; }
+  .bec-vertical-tabs-list { order: 2; }
+  .bec-vertical-tabs-gallery { min-height: 360px; order: 1; }
+}
+
+@media (max-width: 520px) {
+  .bec-vertical-tab { padding: 20px 0; }
+  .bec-vertical-tab-rail { left: -8px; }
+  .bec-vertical-tabs-gallery { min-height: 300px; border-radius: 20px; }
+  .bec-vertical-tabs-image-caption { right: 20px; bottom: 20px; left: 20px; }
+  .bec-vertical-tabs-controls { top: 16px; right: 16px; }
+}
+
+.bec-process-panel {
+  padding: 18px;
+  border: 1px solid rgba(8, 115, 93, 0.1);
+  border-radius: 28px;
+  background: rgba(251, 252, 251, 0.78);
+  box-shadow: 0 18px 50px rgba(20, 32, 45, 0.08);
+}
+
+.bec-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.bec-process-card {
+  min-height: 390px;
+  padding: 26px;
+  border: 1px solid rgba(20, 32, 45, 0.08);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(20, 32, 45, 0.05);
+  color: #14202d;
+  transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 360ms ease,
+    border-color 360ms ease;
+}
+
+.bec-process-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(8, 115, 93, 0.25);
+  box-shadow: 0 18px 38px rgba(8, 115, 93, 0.13);
+}
+
+.bec-process-number {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #14202d;
+}
+
+.bec-process-accent {
+  width: 42px;
+  height: 4px;
+  margin: 14px 0 24px;
+  border-radius: 999px;
+  background: #c09643;
+}
+
+.bec-process-card h3 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  font-weight: 800;
+  color: #14202d;
+}
+
+.bec-process-card p {
+  min-height: 76px;
+  margin: 0 0 22px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.bec-process-thumb {
+  display: flex;
+  min-height: 118px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f3f8f6, #edf6f2);
+  color: #08735d;
+}
+
+.bec-process-thumb svg {
+  width: 52px;
+  height: 52px;
+  stroke-width: 1.5;
+}
+
+@media (max-width: 768px) {
+  .bec-process-panel {
+    margin-right: -24px;
+    margin-left: -24px;
+    padding: 14px;
+    border-radius: 22px 0 0 22px;
+  }
+
+  .bec-process-grid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 2px 2px 8px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .bec-process-grid::-webkit-scrollbar { display: none; }
+
+  .bec-process-grid > * {
+    min-width: min(82vw, 320px);
+    scroll-snap-align: start;
+  }
+}
+
 .bec-membership-card {
   transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 360ms ease;
 }
